@@ -1,22 +1,22 @@
-file_path,filename,mistral_id_doc,mistral_doctype,azure_id_doc,azure_doctype
-dataset/id_cards/0b43b0c-frenchID-3907357441.jpg,0b43b0c-frenchID-3907357441.jpg,True,id card,True,id card
-dataset/id_cards/21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,True,id card,True,id card
-dataset/id_cards/66e4b41eacf401726264350-445115958.jpg,66e4b41eacf401726264350-445115958.jpg,True,id card,True,id card
-dataset/id_cards/big-picture-id-photo-2017-06-20-01-1282880992.jpg,big-picture-id-photo-2017-06-20-01-1282880992.jpg,True,id card,True,id card
-dataset/id_cards/depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,True,id card,True,id card
-dataset/id_cards/fnic-jpg-1994132894.jpg,fnic-jpg-1994132894.jpg,True,id card,True,id card
-dataset/id_cards/french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,True,id card,True,id card
-dataset/passports/1683728325-20230510-new-passport-canada-4-3997758989.jpg,1683728325-20230510-new-passport-canada-4-3997758989.jpg,True,passport,True,passport
-dataset/passports/196079-3573231712.jpg,196079-3573231712.jpg,True,passport,True,passport
-dataset/passports/DelpEphraim_Passport-001-4263437215.jpg,DelpEphraim_Passport-001-4263437215.jpg,True,passport,True,passport
-dataset/passports/Ecp5OYUWAAAdVec-2854078686.jpg,Ecp5OYUWAAAdVec-2854078686.jpg,True,passport,True,passport
-dataset/passports/ID_passport_USA-2021-497107151.jpg,ID_passport_USA-2021-497107151.jpg,True,passport,True,passport
-dataset/passports/Standard-passport-2638612431.jpg,Standard-passport-2638612431.jpg,True,passport,True,passport
-dataset/passports/french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,True,passport,True,passport
-dataset/passports/passeport-controle-4-3813735177.jpg,passeport-controle-4-3813735177.jpg,True,passport,True,passport
-dataset/passports/passport-1-1721243253.jpg,passport-1-1721243253.jpg,True,passport,True,passport
-dataset/passports/vias-pages-3783188661.jpg,vias-pages-3783188661.jpg,False,other,True,other
-dataset/id_cards/France-ID-Card-front-1-4214685582.png,France-ID-Card-front-1-4214685582.png,True,id card,True,id card
-dataset/passports/France-pass-1-3091894550.png,France-pass-1-3091894550.png,True,passport,True,passport
-dataset/passports/_133028110_passport_dates_2x640-nc-2868492495.png,_133028110_passport_dates_2x640-nc-2868492495.png,True,passport,True,passport
-dataset/passports/public-3423989802.png,public-3423989802.png,True,passport,True,passport
+file_path,filename,mistral_id_doc,mistral_doctype,azure_id_doc,azure_doctype,aligned
+dataset/id_cards/0b43b0c-frenchID-3907357441.jpg,0b43b0c-frenchID-3907357441.jpg,True,id card,True,id card,True
+dataset/id_cards/21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,True,id card,True,id card,True
+dataset/id_cards/66e4b41eacf401726264350-445115958.jpg,66e4b41eacf401726264350-445115958.jpg,True,id card,True,id card,True
+dataset/id_cards/big-picture-id-photo-2017-06-20-01-1282880992.jpg,big-picture-id-photo-2017-06-20-01-1282880992.jpg,True,id card,True,id card,True
+dataset/id_cards/depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,True,id card,True,id card,True
+dataset/id_cards/fnic-jpg-1994132894.jpg,fnic-jpg-1994132894.jpg,True,id card,True,id card,True
+dataset/id_cards/french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,True,id card,True,id card,True
+dataset/passports/1683728325-20230510-new-passport-canada-4-3997758989.jpg,1683728325-20230510-new-passport-canada-4-3997758989.jpg,True,passport,True,passport,True
+dataset/passports/196079-3573231712.jpg,196079-3573231712.jpg,True,passport,True,passport,True
+dataset/passports/DelpEphraim_Passport-001-4263437215.jpg,DelpEphraim_Passport-001-4263437215.jpg,True,passport,True,passport,True
+dataset/passports/Ecp5OYUWAAAdVec-2854078686.jpg,Ecp5OYUWAAAdVec-2854078686.jpg,True,passport,True,passport,True
+dataset/passports/ID_passport_USA-2021-497107151.jpg,ID_passport_USA-2021-497107151.jpg,True,passport,True,passport,True
+dataset/passports/Standard-passport-2638612431.jpg,Standard-passport-2638612431.jpg,True,passport,True,passport,True
+dataset/passports/french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,True,passport,True,passport,True
+dataset/passports/passeport-controle-4-3813735177.jpg,passeport-controle-4-3813735177.jpg,True,passport,True,passport,True
+dataset/passports/passport-1-1721243253.jpg,passport-1-1721243253.jpg,True,passport,True,passport,True
+dataset/passports/vias-pages-3783188661.jpg,vias-pages-3783188661.jpg,False,other,True,other,False
+dataset/id_cards/France-ID-Card-front-1-4214685582.png,France-ID-Card-front-1-4214685582.png,True,id card,True,id card,True
+dataset/passports/France-pass-1-3091894550.png,France-pass-1-3091894550.png,True,passport,True,passport,True
+dataset/passports/_133028110_passport_dates_2x640-nc-2868492495.png,_133028110_passport_dates_2x640-nc-2868492495.png,True,passport,True,passport,True
+dataset/passports/public-3423989802.png,public-3423989802.png,True,passport,True,passport,True
