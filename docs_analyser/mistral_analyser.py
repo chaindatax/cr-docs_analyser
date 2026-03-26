@@ -9,10 +9,30 @@ from docs_analyser.base import AnalysisResult, Analyser
 
 
 class MistralAnalyser(Analyser):
+    """Document analyser backed by the Mistral OCR API.
+
+    Encodes the image as base64 and submits it to ``mistral-ocr-latest``
+    with a structured JSON schema to extract ``id_doc`` and ``document_type``.
+
+    Requires the ``MISTRAL_API_KEY`` environment variable.
+    """
+
     def __init__(self):
+        """Initialise the Mistral client using ``MISTRAL_API_KEY``."""
         self._client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
 
     def runner(self, file_path: str) -> AnalysisResult:
+        """Analyse a document image using Mistral OCR.
+
+        Reads the image, encodes it as base64, and calls the OCR API with
+        a JSON schema that extracts ``id_doc`` and ``document_type``.
+
+        Args:
+            file_path: Path to the image file to analyse.
+
+        Returns:
+            An :class:`AnalysisResult` populated from the model's JSON output.
+        """
         with open(file_path, "rb") as f:
             base64_file = base64.b64encode(f.read()).decode("utf-8")
 

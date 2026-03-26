@@ -29,7 +29,22 @@ IDENTITY_ANALYZER_DEFINITION = {
 
 
 class AzureAnalyser(Analyser):
+    """Document analyser backed by Azure Content Understanding.
+
+    Uses a custom analyzer (``identityDocClassifier``) built on top of
+    ``prebuilt-document`` with ``gpt-4.1`` for field extraction and
+    ``text-embedding-3-large`` for semantic chunking.
+
+    The analyzer is created automatically on first instantiation and reused
+    on subsequent calls.
+
+    Requires the ``CONTENTUNDERSTANDING_ENDPOINT`` environment variable.
+    ``CONTENTUNDERSTANDING_KEY`` is optional; if absent,
+    :class:`~azure.identity.DefaultAzureCredential` is used instead.
+    """
+
     def __init__(self):
+        """Initialise the Azure client and ensure the custom analyzer exists."""
         endpoint = os.environ["CONTENTUNDERSTANDING_ENDPOINT"]
         key = os.getenv("CONTENTUNDERSTANDING_KEY")
         credential = AzureKeyCredential(key) if key else DefaultAzureCredential()
@@ -43,6 +58,7 @@ class AzureAnalyser(Analyser):
         self._ensure_analyzer()
 
     def _ensure_analyzer(self):
+        """Create the custom analyzer on the Azure resource if it does not exist."""
         try:
             self._client.get_analyzer(IDENTITY_ANALYZER_ID)
         except ResourceNotFoundError:
@@ -52,6 +68,17 @@ class AzureAnalyser(Analyser):
             ).result()
 
     def runner(self, file_path: str) -> AnalysisResult:
+        """Analyse a document image using Azure Content Understanding.
+
+        Submits the image to the ``identityDocClassifier`` analyzer and maps
+        the returned fields to an :class:`AnalysisResult`.
+
+        Args:
+            file_path: Path to the image file to analyse.
+
+        Returns:
+            An :class:`AnalysisResult` populated from the analyzer's field extraction.
+        """
         with open(file_path, "rb") as f:
             file_bytes = f.read()
 

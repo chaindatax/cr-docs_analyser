@@ -27,6 +27,20 @@ async def analyse_file(
     mistral: MistralAnalyser,
     azure: AzureAnalyser,
 ) -> dict:
+    """Run both analysers on a single file concurrently.
+
+    Mistral and Azure calls are launched in parallel via :func:`asyncio.gather`.
+    Errors from either analyser are caught and logged; the corresponding fields
+    are left empty in the output row.
+
+    Args:
+        file_path: Path to the image file to analyse.
+        mistral: Initialised :class:`MistralAnalyser` instance.
+        azure: Initialised :class:`AzureAnalyser` instance.
+
+    Returns:
+        A dict with keys matching ``FIELDNAMES``, including ``aligned``.
+    """
     async def run(analyser, name) -> AnalysisResult | None:
         try:
             return await asyncio.to_thread(analyser.runner, str(file_path))
@@ -59,6 +73,20 @@ async def analyse_file(
 
 
 async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BATCH_SIZE):
+    """Analyse all images in a directory and write results to a CSV file.
+
+    Scans ``dataset_dir`` for ``.jpg`` and ``.png`` files, processes them in
+    batches of ``batch_size`` using both :class:`MistralAnalyser` and
+    :class:`AzureAnalyser` concurrently, and writes a comparison CSV to
+    ``output_csv``.
+
+    Prints a summary of aligned vs misaligned results on completion.
+
+    Args:
+        dataset_dir: Directory containing images to analyse.
+        output_csv: Destination path for the CSV output.
+        batch_size: Number of files to process concurrently per batch.
+    """
     files = sorted(dataset_dir.rglob("*.jpg")) + sorted(dataset_dir.rglob("*.png"))
     print(f"Found {len(files)} files, processing in batches of {batch_size}...\n")
 
