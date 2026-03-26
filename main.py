@@ -1,5 +1,5 @@
+import asyncio
 import csv
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -22,23 +22,22 @@ FIELDNAMES = [
 ]
 
 
-def analyse_file(
+async def analyse_file(
     file_path: Path,
     mistral: MistralAnalyser,
     azure: AzureAnalyser,
 ) -> dict:
-    mistral_result: AnalysisResult | None = None
-    azure_result: AnalysisResult | None = None
+    async def run(analyser, name) -> AnalysisResult | None:
+        try:
+            return await asyncio.to_thread(analyser.runner, str(file_path))
+        except Exception as e:
+            print(f"  [{name} error] {file_path.name}: {e}")
+            return None
 
-    try:
-        mistral_result = mistral.runner(str(file_path))
-    except Exception as e:
-        print(f"  [mistral error] {file_path.name}: {e}")
-
-    try:
-        azure_result = azure.runner(str(file_path))
-    except Exception as e:
-        print(f"  [azure error] {file_path.name}: {e}")
+    mistral_result, azure_result = await asyncio.gather(
+        run(mistral, "mistral"),
+        run(azure, "azure"),
+    )
 
     aligned = (
         mistral_result is not None
@@ -46,6 +45,7 @@ def analyse_file(
         and mistral_result.id_doc == azure_result.id_doc
         and mistral_result.document_type == azure_result.document_type
     )
+    print(f"  done: {file_path.name} — aligned={aligned}")
 
     return {
         "file_path": str(file_path),
@@ -58,28 +58,21 @@ def analyse_file(
     }
 
 
-def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BATCH_SIZE):
+async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BATCH_SIZE):
     files = sorted(dataset_dir.rglob("*.jpg")) + sorted(dataset_dir.rglob("*.png"))
     print(f"Found {len(files)} files, processing in batches of {batch_size}...\n")
 
     mistral = MistralAnalyser()
     azure = AzureAnalyser()
-
-    rows: list[dict] = [None] * len(files)
+    rows = []
 
     for batch_start in range(0, len(files), batch_size):
         batch = files[batch_start: batch_start + batch_size]
         print(f"Batch {batch_start // batch_size + 1}: {[f.name for f in batch]}")
-
-        with ThreadPoolExecutor(max_workers=batch_size) as executor:
-            future_to_index = {
-                executor.submit(analyse_file, file_path, mistral, azure): batch_start + i
-                for i, file_path in enumerate(batch)
-            }
-            for future in as_completed(future_to_index):
-                index = future_to_index[future]
-                rows[index] = future.result()
-                print(f"  done: {rows[index]['filename']} — aligned={rows[index]['aligned']}")
+        batch_rows = await asyncio.gather(
+            *[analyse_file(f, mistral, azure) for f in batch]
+        )
+        rows.extend(batch_rows)
 
     with output_csv.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
@@ -97,4 +90,4 @@ def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BATCH_SIZ
 
 if __name__ == "__main__":
     load_dotenv()
-    analyse_all(DATASET_DIR, OUTPUT_CSV)
+    asyncio.run(analyse_all(DATASET_DIR, OUTPUT_CSV))
