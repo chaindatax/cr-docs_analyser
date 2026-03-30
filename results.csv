@@ -1,18 +1,19 @@
-file_path,filename,mistral_id_doc,mistral_doctype,azure_id_doc,azure_doctype,aligned
-dataset/misc/id/1-18900169.jpg,1-18900169.jpg,True,id card,True,other,False
-dataset/misc/id/1-2471433401.jpg,1-2471433401.jpg,True,id card,True,id card,True
-dataset/misc/id/1-3118488783.jpg,1-3118488783.jpg,True,id card,True,id card,True
-dataset/misc/id/1-4014550170.jpg,1-4014550170.jpg,True,id card,True,id card,True
-dataset/misc/id/1-842369233.jpg,1-842369233.jpg,True,proof_of_residency,True,other,False
-dataset/misc/id/Document-d-identite-2.jpg,Document-d-identite-2.jpg,True,passport,True,passport,True
-dataset/misc/id/IMG_6211_LegalPhoto-1697863245.jpg,IMG_6211_LegalPhoto-1697863245.jpg,True,id card,True,other,False
-dataset/misc/id/carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,True,id card,True,id card,True
-dataset/misc/id/csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,True,proof_of_residency,True,other,False
-dataset/misc/id/les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,True,id card,True,id card,True
-dataset/misc/jdd/1-1822160908.jpg,1-1822160908.jpg,False,proof_of_residency,False,other,False
-dataset/misc/jdd/12031810-405818722.jpg,12031810-405818722.jpg,True,proof_of_residency,False,other,False
-dataset/misc/jdd/1719685377-1436965417.jpg,1719685377-1436965417.jpg,False,other,False,other,True
-dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,False,other,False,other,True
-dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,False,other,False,other,True
-dataset/misc/jdd/exemple-de-justificatif-de-domicile-3015945657.jpg,exemple-de-justificatif-de-domicile-3015945657.jpg,False,other,False,other,True
-dataset/misc/jdd/facture-EDF-page-1-1270172759.jpg,facture-EDF-page-1-1270172759.jpg,False,proof_of_residency,False,other,False
+file_path,filename,mistral_id_doc,mistral_document_id_type,mistral_document_type,azure_id_doc,azure_document_id_type,azure_document_type,mistral_vision_id_doc,mistral_vision_document_id_type,mistral_vision_document_type,azure_vision_id_doc,azure_vision_document_id_type,azure_vision_document_type,aligned
+dataset/misc/id/1-18900169.jpg,1-18900169.jpg,True,id card,national identity card,True,,other,True,id_card,"[{'type': 'student_id', 'issuer': 'Université Nouveaux Horizons'}, {'type': 'voter_id', 'issuer': 'République Démocratique du Congo - Commission Electorale Nationale Indépendante'}]",True,id card,"student id card, voter id card",False
+dataset/misc/id/1-2471433401.jpg,1-2471433401.jpg,True,id card,national identity card,True,,id card,True,id_card,Moroccan National Identity Card,True,id card,national identity card,False
+dataset/misc/id/1-3118488783.jpg,1-3118488783.jpg,True,id card,Carte Nationale d'Identité / Identity Card,True,,id card,True,id_card,French National Identity Card (Carte Nationale d’Identité),True,id card,French national identity card,False
+dataset/misc/id/1-4014550170.jpg,1-4014550170.jpg,True,id card,French National Identity Card,True,,id card,True,id_card,French National Identity Card (Carte Nationale d'Identité),True,id card,French National Identity Card,False
+dataset/misc/id/1-842369233.jpg,1-842369233.jpg,True,proof_of_residency,residence permit,True,,other,True,proof_of_residency,Titre de Séjour (French Residence Permit),True,proof_of_residency,residence permit,False
+dataset/misc/id/Document-d-identite-2.jpg,Document-d-identite-2.jpg,True,passport,passport,True,,passport,True,passport,travel_document,True,passport,French passport,False
+dataset/misc/id/IMG_6211_LegalPhoto-1697863245.jpg,IMG_6211_LegalPhoto-1697863245.jpg,True,id card,identity document,True,,other,True,id card,Legal identity photo printout conforming to ISO/IEC 19794-5:2205 standard,True,not_identity_doc,identity_photo_sheet,False
+dataset/misc/id/carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,True,id card,French National Identity Card,True,,id card,True,id_card,Carte Nationale d’Identité (French National Identity Card),True,id card,French national identity card,False
+dataset/misc/id/csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,True,proof_of_residency,Permanent Resident Card,True,,other,True,id card,Permanent Resident Card,True,proof_of_residency,permanent_resident_card,False
+dataset/misc/id/les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,True,id card,identity card,True,,id card,True,id_card,"{'identity_card': {'issuing_country': 'Italy', 'issuing_authority': ""Ministero dell'Interno"", 'driver_license': True, 'passport': False, 'residence_permit': False}}",True,passport,"passport, id card, driving license",False
+dataset/misc/jdd/1-1822160908.jpg,1-1822160908.jpg,False,not_identity_doc,telephone_bill,False,,other,False,not_identity_doc,telecom_bill,False,not_identity_doc,utility bill,False
+dataset/misc/jdd/12031810-405818722.jpg,12031810-405818722.jpg,True,proof_of_residency,letter,False,,other,True,proof_of_residency,vehicle_registration_request,False,not_identity_doc,administrative_request_letter,False
+dataset/misc/jdd/1689160419-3971040533.jpg,1689160419-3971040533.jpg,False,not_identity_doc,invoice,False,,other,False,not_identity_doc,rental_arrears_notice,False,not_identity_doc,rent_invoice,False
+dataset/misc/jdd/1719685377-1436965417.jpg,1719685377-1436965417.jpg,False,not_identity_doc,utility_bill,False,,other,False,not_identity_doc,attestation_titulaire_de_contrat,False,proof_of_residency,EDF contract attestation,False
+dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,False,not_identity_doc,customer_contact_information,False,,other,False,not_identity_doc,attestation_titulaire_de_contrat,False,proof_of_residency,EDF contract attestation,False
+dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,False,not_identity_doc,customer_contact_information,False,,other,False,not_identity_doc,attestation_titulaire_de_contrat,False,proof_of_residency,attestation de titulaire de contrat EDF,False
+dataset/misc/jdd/exemple-de-justificatif-de-domicile-3015945657.jpg,exemple-de-justificatif-de-domicile-3015945657.jpg,False,not_identity_doc,utility_bill,False,,other,False,not_identity_doc,electricity_bill,False,not_identity_doc,electricity_bill,False
+dataset/misc/jdd/facture-EDF-page-1-1270172759.jpg,facture-EDF-page-1-1270172759.jpg,False,not_identity_doc,utility_bill,False,,other,False,not_identity_doc,utility_bill,False,not_identity_doc,electricity_bill,False
