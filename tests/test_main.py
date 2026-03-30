@@ -7,6 +7,19 @@ import pytest
 from docs_analyser.azure_analyser import AzureAnalyser
 from docs_analyser.base import AnalysisResult
 from docs_analyser.mistral_analyser import MistralAnalyser
+from pprint import pprint
+
+# --- DATASET_DIR file listing ---
+
+def test_dataset_dir_lists_jpg_and_png_files():
+    from main import DATASET_DIR
+    files = sorted(DATASET_DIR.rglob("*.jpg")) + sorted(DATASET_DIR.rglob("*.png"))
+    pprint(f"Found {len(files)} files in {DATASET_DIR}")
+    for f in files:
+        pprint(f"{f}")
+    assert len(files) > 0, f"No images found in {DATASET_DIR}"
+    assert all(f.suffix in (".jpg", ".png") for f in files)
+    assert all(f.is_file() for f in files)
 
 
 # --- MistralAnalyser ---

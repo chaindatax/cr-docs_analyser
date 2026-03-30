@@ -10,7 +10,7 @@ from docs_analyser.base import AnalysisResult
 from docs_analyser.mistral_analyser import MistralAnalyser
 from docs_analyser.mistral_vision_analyser import MistralVisionAnalyser
 
-DATASET_DIR = Path("dataset/misc")
+DATASET_DIR = Path("dataset")
 OUTPUT_CSV = Path("results.csv")
 BATCH_SIZE = 10
 FIELDNAMES = [
