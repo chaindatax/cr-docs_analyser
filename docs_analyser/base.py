@@ -8,7 +8,7 @@ FIELD_DEFINITIONS: dict[str, dict] = {
     },
     "document_type": {
         "type": "string",
-        "description": "Type of identity document: 'id card', 'passport', or 'other'",
+        "description": "Type of identity document: 'id card', 'passport', 'proof_of_residency', or 'other'",
     },
 }
 """Shared field definitions used by all analysers to extract ``id_doc`` and ``document_type``."""

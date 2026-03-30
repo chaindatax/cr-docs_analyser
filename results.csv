@@ -1,22 +1,18 @@
 file_path,filename,mistral_id_doc,mistral_doctype,azure_id_doc,azure_doctype,aligned
-dataset/id_cards/0b43b0c-frenchID-3907357441.jpg,0b43b0c-frenchID-3907357441.jpg,True,id card,True,id card,True
-dataset/id_cards/21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,21-french-identity-card-1988-1994-PCBNWG-3644828505.jpg,True,id card,True,id card,True
-dataset/id_cards/66e4b41eacf401726264350-445115958.jpg,66e4b41eacf401726264350-445115958.jpg,True,id card,True,id card,True
-dataset/id_cards/big-picture-id-photo-2017-06-20-01-1282880992.jpg,big-picture-id-photo-2017-06-20-01-1282880992.jpg,True,id card,True,id card,True
-dataset/id_cards/depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,depositphotos_5111236-French-national-identity-card-female-3491414765.jpg,True,id card,True,id card,True
-dataset/id_cards/fnic-jpg-1994132894.jpg,fnic-jpg-1994132894.jpg,True,id card,True,id card,True
-dataset/id_cards/french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,french-id-card-real-french-id-card-french-identity-card-with-french-id-card-template-1565833240.jpg,True,id card,True,id card,True
-dataset/passports/1683728325-20230510-new-passport-canada-4-3997758989.jpg,1683728325-20230510-new-passport-canada-4-3997758989.jpg,True,passport,True,passport,True
-dataset/passports/196079-3573231712.jpg,196079-3573231712.jpg,True,passport,True,passport,True
-dataset/passports/DelpEphraim_Passport-001-4263437215.jpg,DelpEphraim_Passport-001-4263437215.jpg,True,passport,True,passport,True
-dataset/passports/Ecp5OYUWAAAdVec-2854078686.jpg,Ecp5OYUWAAAdVec-2854078686.jpg,True,passport,True,passport,True
-dataset/passports/ID_passport_USA-2021-497107151.jpg,ID_passport_USA-2021-497107151.jpg,True,passport,True,passport,True
-dataset/passports/Standard-passport-2638612431.jpg,Standard-passport-2638612431.jpg,True,passport,True,passport,True
-dataset/passports/french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,french-diplomatic-passport-v0-0xptroj0uxia1-1085992610.jpg,True,passport,True,passport,True
-dataset/passports/passeport-controle-4-3813735177.jpg,passeport-controle-4-3813735177.jpg,True,passport,True,passport,True
-dataset/passports/passport-1-1721243253.jpg,passport-1-1721243253.jpg,True,passport,True,passport,True
-dataset/passports/vias-pages-3783188661.jpg,vias-pages-3783188661.jpg,False,other,True,other,False
-dataset/id_cards/France-ID-Card-front-1-4214685582.png,France-ID-Card-front-1-4214685582.png,True,id card,True,id card,True
-dataset/passports/France-pass-1-3091894550.png,France-pass-1-3091894550.png,True,passport,True,passport,True
-dataset/passports/_133028110_passport_dates_2x640-nc-2868492495.png,_133028110_passport_dates_2x640-nc-2868492495.png,True,passport,True,passport,True
-dataset/passports/public-3423989802.png,public-3423989802.png,True,passport,True,passport,True
+dataset/misc/id/1-18900169.jpg,1-18900169.jpg,True,id card,True,other,False
+dataset/misc/id/1-2471433401.jpg,1-2471433401.jpg,True,id card,True,id card,True
+dataset/misc/id/1-3118488783.jpg,1-3118488783.jpg,True,id card,True,id card,True
+dataset/misc/id/1-4014550170.jpg,1-4014550170.jpg,True,id card,True,id card,True
+dataset/misc/id/1-842369233.jpg,1-842369233.jpg,True,proof_of_residency,True,other,False
+dataset/misc/id/Document-d-identite-2.jpg,Document-d-identite-2.jpg,True,passport,True,passport,True
+dataset/misc/id/IMG_6211_LegalPhoto-1697863245.jpg,IMG_6211_LegalPhoto-1697863245.jpg,True,id card,True,other,False
+dataset/misc/id/carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,carte-d-identite-ce-qui-change-en-bretagne_3173729_676x450p-2581207544.jpg,True,id card,True,id card,True
+dataset/misc/id/csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,csm_CA_RPC_2021_1920_4c0a2d9287-515808575.jpg,True,proof_of_residency,True,other,False
+dataset/misc/id/les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,les-faux-papiers-ne-sont-pas-toujours-facilement-identifiables-photo-er-arnaud-castagne-1670082236-3420960911.jpg,True,id card,True,id card,True
+dataset/misc/jdd/1-1822160908.jpg,1-1822160908.jpg,False,proof_of_residency,False,other,False
+dataset/misc/jdd/12031810-405818722.jpg,12031810-405818722.jpg,True,proof_of_residency,False,other,False
+dataset/misc/jdd/1719685377-1436965417.jpg,1719685377-1436965417.jpg,False,other,False,other,True
+dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788-2.jpg,False,other,False,other,True
+dataset/misc/jdd/attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,attestation-de-domicile-page-001_censored-724x1024-2927490788.jpg,False,other,False,other,True
+dataset/misc/jdd/exemple-de-justificatif-de-domicile-3015945657.jpg,exemple-de-justificatif-de-domicile-3015945657.jpg,False,other,False,other,True
+dataset/misc/jdd/facture-EDF-page-1-1270172759.jpg,facture-EDF-page-1-1270172759.jpg,False,proof_of_residency,False,other,False

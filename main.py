@@ -8,7 +8,7 @@ from docs_analyser.azure_analyser import AzureAnalyser
 from docs_analyser.base import AnalysisResult
 from docs_analyser.mistral_analyser import MistralAnalyser
 
-DATASET_DIR = Path("dataset")
+DATASET_DIR = Path("dataset/misc")
 OUTPUT_CSV = Path("results.csv")
 BATCH_SIZE = 10
 FIELDNAMES = [
