@@ -35,4 +35,8 @@ class MistralVisionAnalyser(Analyser):
         )
 
         data = json.loads(response.choices[0].message.content)
-        return AnalysisResult(id_doc=data["id_doc"], document_type=data["document_type"])
+        return AnalysisResult(
+            id_doc=data["id_doc"],
+            document_id_type=data["document_id_type"],
+            document_type=data["document_type"],
+        )

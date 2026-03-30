@@ -30,7 +30,7 @@ def test_mistral_returns_analysis_result(tmp_path):
     img.write_bytes(b"fake-image-data")
 
     mock_response = MagicMock()
-    mock_response.document_annotation = json.dumps({"document_type": "id card", "id_doc": True})
+    mock_response.document_annotation = json.dumps({"id_doc": True, "document_id_type": "id card", "document_type": "french national id card"})
 
     mock_client = MagicMock()
     mock_client.ocr.process.return_value = mock_response
@@ -39,7 +39,7 @@ def test_mistral_returns_analysis_result(tmp_path):
         with patch("docs_analyser.mistral_analyser.Mistral", return_value=mock_client):
             result = MistralAnalyser().runner(str(img))
 
-    assert result == AnalysisResult(id_doc=True, document_type="id card")
+    assert result == AnalysisResult(id_doc=True, document_id_type="id card", document_type="french national id card")
 
 
 def test_mistral_encodes_file_as_base64(tmp_path):
@@ -49,7 +49,7 @@ def test_mistral_encodes_file_as_base64(tmp_path):
     img.write_bytes(content)
 
     mock_response = MagicMock()
-    mock_response.document_annotation = json.dumps({"document_type": "other", "id_doc": False})
+    mock_response.document_annotation = json.dumps({"id_doc": False, "document_id_type": "not_identity_doc", "document_type": "invoice"})
     mock_client = MagicMock()
     mock_client.ocr.process.return_value = mock_response
 
@@ -90,7 +90,8 @@ def test_azure_returns_analysis_result(tmp_path):
 
     mock_fields = {
         "id_doc": {"valueBoolean": True},
-        "document_type": {"valueString": "passport"},
+        "document_id_type": {"valueString": "passport"},
+        "document_type": {"valueString": "french passport"},
     }
     mock_result = MagicMock()
     mock_result.contents[0].fields = mock_fields
@@ -98,7 +99,7 @@ def test_azure_returns_analysis_result(tmp_path):
 
     result = analyser.runner(str(img))
 
-    assert result == AnalysisResult(id_doc=True, document_type="passport")
+    assert result == AnalysisResult(id_doc=True, document_id_type="passport", document_type="french passport")
 
 
 # --- MistralVisionAnalyser ---
@@ -108,7 +109,7 @@ def test_mistral_vision_returns_analysis_result(tmp_path):
     img.write_bytes(b"fake-image-data")
 
     mock_message = MagicMock()
-    mock_message.content = json.dumps({"id_doc": True, "document_type": "passport"})
+    mock_message.content = json.dumps({"id_doc": True, "document_id_type": "passport", "document_type": "french passport"})
     mock_response = MagicMock()
     mock_response.choices[0].message = mock_message
 
@@ -120,7 +121,7 @@ def test_mistral_vision_returns_analysis_result(tmp_path):
             from docs_analyser.mistral_vision_analyser import MistralVisionAnalyser
             result = MistralVisionAnalyser().runner(str(img))
 
-    assert result == AnalysisResult(id_doc=True, document_type="passport")
+    assert result == AnalysisResult(id_doc=True, document_id_type="passport", document_type="french passport")
     call_kwargs = mock_client.chat.complete.call_args.kwargs
     assert call_kwargs["model"] == "pixtral-12b-2409"
 
@@ -147,14 +148,14 @@ def test_azure_vision_returns_analysis_result(tmp_path):
     analyser, mock_client = _make_azure_vision_analyser()
 
     mock_message = MagicMock()
-    mock_message.content = json.dumps({"id_doc": False, "document_type": "other"})
+    mock_message.content = json.dumps({"id_doc": False, "document_id_type": "not_identity_doc", "document_type": "utility bill"})
     mock_response = MagicMock()
     mock_response.choices[0].message = mock_message
     mock_client.chat.completions.create.return_value = mock_response
 
     result = analyser.runner(str(img))
 
-    assert result == AnalysisResult(id_doc=False, document_type="other")
+    assert result == AnalysisResult(id_doc=False, document_id_type="not_identity_doc", document_type="utility bill")
     call_kwargs = mock_client.chat.completions.create.call_args.kwargs
     assert call_kwargs["model"] == "gpt-4.1"
 
@@ -169,7 +170,8 @@ def test_azure_creates_analyzer_if_missing(tmp_path):
     mock_client.get_analyzer.side_effect = ResourceNotFoundError()
     mock_fields = {
         "id_doc": {"valueBoolean": False},
-        "document_type": {"valueString": "other"},
+        "document_id_type": {"valueString": "not_identity_doc"},
+        "document_type": {"valueString": "invoice"},
     }
     mock_result = MagicMock()
     mock_result.contents[0].fields = mock_fields
@@ -185,4 +187,4 @@ def test_azure_creates_analyzer_if_missing(tmp_path):
 
     mock_client.begin_create_analyzer.assert_called_once()
     result = analyser.runner(str(img))
-    assert result == AnalysisResult(id_doc=False, document_type="other")
+    assert result == AnalysisResult(id_doc=False, document_id_type="not_identity_doc", document_type="invoice")

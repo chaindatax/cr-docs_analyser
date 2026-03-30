@@ -59,5 +59,6 @@ class MistralAnalyser(Analyser):
         data = json.loads(response.document_annotation)
         return AnalysisResult(
             id_doc=data["id_doc"],
+            document_id_type=data["document_id_type"],
             document_type=data["document_type"],
         )

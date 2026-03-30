@@ -5,8 +5,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from docs_analyser.azure_analyser import AzureAnalyser
+from docs_analyser.azure_vision_analyser import AzureVisionAnalyser
 from docs_analyser.base import AnalysisResult
 from docs_analyser.mistral_analyser import MistralAnalyser
+from docs_analyser.mistral_vision_analyser import MistralVisionAnalyser
 
 DATASET_DIR = Path("dataset/misc")
 OUTPUT_CSV = Path("results.csv")
@@ -15,9 +17,17 @@ FIELDNAMES = [
     "file_path",
     "filename",
     "mistral_id_doc",
-    "mistral_doctype",
+    "mistral_document_id_type",
+    "mistral_document_type",
     "azure_id_doc",
-    "azure_doctype",
+    "azure_document_id_type",
+    "azure_document_type",
+    "mistral_vision_id_doc",
+    "mistral_vision_document_id_type",
+    "mistral_vision_document_type",
+    "azure_vision_id_doc",
+    "azure_vision_document_id_type",
+    "azure_vision_document_type",
     "aligned",
 ]
 
@@ -26,17 +36,21 @@ async def analyse_file(
     file_path: Path,
     mistral: MistralAnalyser,
     azure: AzureAnalyser,
+    mistral_vision: MistralVisionAnalyser,
+    azure_vision: AzureVisionAnalyser,
 ) -> dict:
-    """Run both analysers on a single file concurrently.
+    """Run all four analysers on a single file concurrently.
 
-    Mistral and Azure calls are launched in parallel via :func:`asyncio.gather`.
-    Errors from either analyser are caught and logged; the corresponding fields
+    All four calls are launched in parallel via :func:`asyncio.gather`.
+    Errors from any analyser are caught and logged; the corresponding fields
     are left empty in the output row.
 
     Args:
         file_path: Path to the image file to analyse.
         mistral: Initialised :class:`MistralAnalyser` instance.
         azure: Initialised :class:`AzureAnalyser` instance.
+        mistral_vision: Initialised :class:`MistralVisionAnalyser` instance.
+        azure_vision: Initialised :class:`AzureVisionAnalyser` instance.
 
     Returns:
         A dict with keys matching ``FIELDNAMES``, including ``aligned``.
@@ -48,26 +62,39 @@ async def analyse_file(
             print(f"  [{name} error] {file_path.name}: {e}")
             return None
 
-    mistral_result, azure_result = await asyncio.gather(
+    mistral_result, azure_result, mistral_vision_result, azure_vision_result = await asyncio.gather(
         run(mistral, "mistral"),
         run(azure, "azure"),
+        run(mistral_vision, "mistral_vision"),
+        run(azure_vision, "azure_vision"),
     )
 
+    results = [mistral_result, azure_result, mistral_vision_result, azure_vision_result]
     aligned = (
-        mistral_result is not None
-        and azure_result is not None
-        and mistral_result.id_doc == azure_result.id_doc
-        and mistral_result.document_type == azure_result.document_type
+        all(r is not None for r in results)
+        and len({r.id_doc for r in results}) == 1
+        and len({r.document_id_type for r in results}) == 1
+        and len({r.document_type for r in results}) == 1
     )
     print(f"  done: {file_path.name} — aligned={aligned}")
+
+    def f(r, attr): return getattr(r, attr) if r else ""
 
     return {
         "file_path": str(file_path),
         "filename": file_path.name,
-        "mistral_id_doc": mistral_result.id_doc if mistral_result else "",
-        "mistral_doctype": mistral_result.document_type if mistral_result else "",
-        "azure_id_doc": azure_result.id_doc if azure_result else "",
-        "azure_doctype": azure_result.document_type if azure_result else "",
+        "mistral_id_doc": f(mistral_result, "id_doc"),
+        "mistral_document_id_type": f(mistral_result, "document_id_type"),
+        "mistral_document_type": f(mistral_result, "document_type"),
+        "azure_id_doc": f(azure_result, "id_doc"),
+        "azure_document_id_type": f(azure_result, "document_id_type"),
+        "azure_document_type": f(azure_result, "document_type"),
+        "mistral_vision_id_doc": f(mistral_vision_result, "id_doc"),
+        "mistral_vision_document_id_type": f(mistral_vision_result, "document_id_type"),
+        "mistral_vision_document_type": f(mistral_vision_result, "document_type"),
+        "azure_vision_id_doc": f(azure_vision_result, "id_doc"),
+        "azure_vision_document_id_type": f(azure_vision_result, "document_id_type"),
+        "azure_vision_document_type": f(azure_vision_result, "document_type"),
         "aligned": aligned,
     }
 
@@ -92,13 +119,15 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
 
     mistral = MistralAnalyser()
     azure = AzureAnalyser()
+    mistral_vision = MistralVisionAnalyser()
+    azure_vision = AzureVisionAnalyser()
     rows = []
 
     for batch_start in range(0, len(files), batch_size):
         batch = files[batch_start: batch_start + batch_size]
         print(f"Batch {batch_start // batch_size + 1}: {[f.name for f in batch]}")
         batch_rows = await asyncio.gather(
-            *[analyse_file(f, mistral, azure) for f in batch]
+            *[analyse_file(f, mistral, azure, mistral_vision, azure_vision) for f in batch]
         )
         rows.extend(batch_rows)
 
@@ -113,7 +142,13 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
     if misaligned:
         print("Misaligned files:")
         for r in misaligned:
-            print(f"  {r['filename']}: mistral=({r['mistral_id_doc']}, {r['mistral_doctype']}) azure=({r['azure_id_doc']}, {r['azure_doctype']})")
+            print(
+                f"  {r['filename']}: "
+                f"mistral=({r['mistral_id_doc']}, {r['mistral_document_id_type']}, {r['mistral_document_type']}) "
+                f"azure=({r['azure_id_doc']}, {r['azure_document_id_type']}, {r['azure_document_type']}) "
+                f"mistral_vision=({r['mistral_vision_id_doc']}, {r['mistral_vision_document_id_type']}, {r['mistral_vision_document_type']}) "
+                f"azure_vision=({r['azure_vision_id_doc']}, {r['azure_vision_document_id_type']}, {r['azure_vision_document_type']})"
+            )
 
 
 if __name__ == "__main__":

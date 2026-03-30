@@ -24,10 +24,12 @@ class AnalysisResult:
 
     Attributes:
         id_doc: Whether the document is an identity document.
-        document_type: Type of document — ``"id card"``, ``"passport"``, or ``"other"``.
+        document_id_type: Identity document type — ``"id card"``, ``"passport"``, ``"proof_of_residency"``, or ``"not_identity_doc"``.
+        document_type: Free-form document type as described by the model.
     """
 
     id_doc: bool
+    document_id_type: str
     document_type: str
 
 
