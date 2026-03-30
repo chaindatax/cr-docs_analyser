@@ -101,6 +101,64 @@ def test_azure_returns_analysis_result(tmp_path):
     assert result == AnalysisResult(id_doc=True, document_type="passport")
 
 
+# --- MistralVisionAnalyser ---
+
+def test_mistral_vision_returns_analysis_result(tmp_path):
+    img = tmp_path / "doc.jpg"
+    img.write_bytes(b"fake-image-data")
+
+    mock_message = MagicMock()
+    mock_message.content = json.dumps({"id_doc": True, "document_type": "passport"})
+    mock_response = MagicMock()
+    mock_response.choices[0].message = mock_message
+
+    mock_client = MagicMock()
+    mock_client.chat.complete.return_value = mock_response
+
+    with patch.dict("os.environ", {"MISTRAL_API_KEY": "test-key"}):
+        with patch("docs_analyser.mistral_vision_analyser.Mistral", return_value=mock_client):
+            from docs_analyser.mistral_vision_analyser import MistralVisionAnalyser
+            result = MistralVisionAnalyser().runner(str(img))
+
+    assert result == AnalysisResult(id_doc=True, document_type="passport")
+    call_kwargs = mock_client.chat.complete.call_args.kwargs
+    assert call_kwargs["model"] == "pixtral-12b-2409"
+
+
+# --- AzureVisionAnalyser ---
+
+def _make_azure_vision_analyser():
+    mock_client = MagicMock()
+    env = {
+        "AZURE_OPENAI_KEY": "fake-key",
+        "AZURE_OPENAI_ENDPOINT": "https://fake.openai.azure.com/",
+    }
+    with patch.dict("os.environ", env):
+        with patch("docs_analyser.azure_vision_analyser.AzureOpenAI", return_value=mock_client):
+            from docs_analyser.azure_vision_analyser import AzureVisionAnalyser
+            analyser = AzureVisionAnalyser()
+    return analyser, mock_client
+
+
+def test_azure_vision_returns_analysis_result(tmp_path):
+    img = tmp_path / "doc.jpg"
+    img.write_bytes(b"fake-image-data")
+
+    analyser, mock_client = _make_azure_vision_analyser()
+
+    mock_message = MagicMock()
+    mock_message.content = json.dumps({"id_doc": False, "document_type": "other"})
+    mock_response = MagicMock()
+    mock_response.choices[0].message = mock_message
+    mock_client.chat.completions.create.return_value = mock_response
+
+    result = analyser.runner(str(img))
+
+    assert result == AnalysisResult(id_doc=False, document_type="other")
+    call_kwargs = mock_client.chat.completions.create.call_args.kwargs
+    assert call_kwargs["model"] == "gpt-4.1"
+
+
 def test_azure_creates_analyzer_if_missing(tmp_path):
     from azure.core.exceptions import ResourceNotFoundError
 

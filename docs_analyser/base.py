@@ -6,9 +6,13 @@ FIELD_DEFINITIONS: dict[str, dict] = {
         "type": "boolean",
         "description": "Is this document related to the identification of a person?",
     },
+    "document_id_type": {
+        "type": "string",
+        "description": "Type of identity document: 'id card', 'passport', 'proof_of_residency', or 'not_identity_doc'",
+    },
     "document_type": {
         "type": "string",
-        "description": "Type of identity document: 'id card', 'passport', 'proof_of_residency', or 'other'",
+        "description": "Type of document, can be any kind of type",
     },
 }
 """Shared field definitions used by all analysers to extract ``id_doc`` and ``document_type``."""
