@@ -131,7 +131,7 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
         rows.extend(batch_rows)
 
     with output_csv.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES, delimiter=';')
         writer.writeheader()
         writer.writerows(rows)
 
