@@ -80,7 +80,7 @@ class AzureAnalyser(Analyser):
 
         fields = result.contents[0].fields
         return AnalysisResult(
-            id_doc=fields.get("id_doc", {}).get("valueBoolean"),
-            document_id_type=fields.get("document_id_type", {}).get("valueString"),
-            document_type=fields.get("document_type", {}).get("valueString"),
+            is_doc_id=fields.get("is_doc_id", {}).get("valueBoolean"),
+            id_doc_type=fields.get("id_doc_type", {}).get("valueString"),
+            doc_type=fields.get("doc_type", {}).get("valueString"),
         )

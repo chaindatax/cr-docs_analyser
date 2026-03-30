@@ -2,20 +2,20 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 FIELD_DEFINITIONS: dict[str, dict] = {
-    "id_doc": {
+    "is_doc_id": {
         "type": "boolean",
         "description": "Is this document related to the identification of a person?",
     },
-    "document_id_type": {
+    "id_doc_type": {
         "type": "string",
         "description": "Type of identity document: 'id card', 'passport', 'proof_of_residency', or 'not_identity_doc'",
     },
-    "document_type": {
+    "doc_type": {
         "type": "string",
         "description": "Type of document, can be any kind of type",
     },
 }
-"""Shared field definitions used by all analysers to extract ``id_doc`` and ``document_type``."""
+"""Shared field definitions used by all analysers to extract ``is_doc_id``, ``id_doc_type`` and ``doc_type``."""
 
 
 @dataclass
@@ -23,14 +23,14 @@ class AnalysisResult:
     """Result of a document analysis.
 
     Attributes:
-        id_doc: Whether the document is an identity document.
-        document_id_type: Identity document type — ``"id card"``, ``"passport"``, ``"proof_of_residency"``, or ``"not_identity_doc"``.
-        document_type: Free-form document type as described by the model.
+        is_doc_id: Whether the document is an identity document.
+        id_doc_type: Identity document type — ``"id card"``, ``"passport"``, ``"proof_of_residency"``, or ``"not_identity_doc"``.
+        doc_type: Free-form document type as described by the model.
     """
 
-    id_doc: bool
-    document_id_type: str
-    document_type: str
+    is_doc_id: bool
+    id_doc_type: str
+    doc_type: str
 
 
 class Analyser(ABC):
@@ -48,5 +48,5 @@ class Analyser(ABC):
             file_path: Path to the image file to analyse.
 
         Returns:
-            An :class:`AnalysisResult` with ``id_doc`` and ``document_type``.
+            An :class:`AnalysisResult` with ``is_doc_id``, ``id_doc_type`` and ``doc_type``.
         """

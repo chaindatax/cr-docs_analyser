@@ -16,18 +16,18 @@ BATCH_SIZE = 10
 FIELDNAMES = [
     "file_path",
     "filename",
-    "mistral_id_doc",
-    "mistral_document_id_type",
-    "mistral_document_type",
-    "azure_id_doc",
-    "azure_document_id_type",
-    "azure_document_type",
-    "mistral_vision_id_doc",
-    "mistral_vision_document_id_type",
-    "mistral_vision_document_type",
-    "azure_vision_id_doc",
-    "azure_vision_document_id_type",
-    "azure_vision_document_type",
+    "mistral_is_doc_id",
+    "mistral_id_doc_type",
+    "mistral_doc_type",
+    "azure_is_doc_id",
+    "azure_id_doc_type",
+    "azure_doc_type",
+    "mistral_vision_is_doc_id",
+    "mistral_vision_id_doc_type",
+    "mistral_vision_doc_type",
+    "azure_vision_is_doc_id",
+    "azure_vision_id_doc_type",
+    "azure_vision_doc_type",
     "aligned",
 ]
 
@@ -72,29 +72,29 @@ async def analyse_file(
     results = [mistral_result, azure_result, mistral_vision_result, azure_vision_result]
     aligned = (
         all(r is not None for r in results)
-        and len({r.id_doc for r in results}) == 1
-        and len({r.document_id_type for r in results}) == 1
-        and len({r.document_type for r in results}) == 1
+        and len({r.is_doc_id for r in results}) == 1
+        and len({r.id_doc_type for r in results}) == 1
+        and len({r.doc_type for r in results}) == 1
     )
     print(f"  done: {file_path.name} — aligned={aligned}")
 
     def f(r, attr): return getattr(r, attr) if r else ""
 
     return {
-        "file_path": str(file_path),
+        "file_path": str(file_path.parent),
         "filename": file_path.name,
-        "mistral_id_doc": f(mistral_result, "id_doc"),
-        "mistral_document_id_type": f(mistral_result, "document_id_type"),
-        "mistral_document_type": f(mistral_result, "document_type"),
-        "azure_id_doc": f(azure_result, "id_doc"),
-        "azure_document_id_type": f(azure_result, "document_id_type"),
-        "azure_document_type": f(azure_result, "document_type"),
-        "mistral_vision_id_doc": f(mistral_vision_result, "id_doc"),
-        "mistral_vision_document_id_type": f(mistral_vision_result, "document_id_type"),
-        "mistral_vision_document_type": f(mistral_vision_result, "document_type"),
-        "azure_vision_id_doc": f(azure_vision_result, "id_doc"),
-        "azure_vision_document_id_type": f(azure_vision_result, "document_id_type"),
-        "azure_vision_document_type": f(azure_vision_result, "document_type"),
+        "mistral_is_doc_id": f(mistral_result, "is_doc_id"),
+        "mistral_id_doc_type": f(mistral_result, "id_doc_type"),
+        "mistral_doc_type": f(mistral_result, "doc_type"),
+        "azure_is_doc_id": f(azure_result, "is_doc_id"),
+        "azure_id_doc_type": f(azure_result, "id_doc_type"),
+        "azure_doc_type": f(azure_result, "doc_type"),
+        "mistral_vision_is_doc_id": f(mistral_vision_result, "is_doc_id"),
+        "mistral_vision_id_doc_type": f(mistral_vision_result, "id_doc_type"),
+        "mistral_vision_doc_type": f(mistral_vision_result, "doc_type"),
+        "azure_vision_is_doc_id": f(azure_vision_result, "is_doc_id"),
+        "azure_vision_id_doc_type": f(azure_vision_result, "id_doc_type"),
+        "azure_vision_doc_type": f(azure_vision_result, "doc_type"),
         "aligned": aligned,
     }
 
@@ -103,9 +103,8 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
     """Analyse all images in a directory and write results to a CSV file.
 
     Scans ``dataset_dir`` for ``.jpg`` and ``.png`` files, processes them in
-    batches of ``batch_size`` using both :class:`MistralAnalyser` and
-    :class:`AzureAnalyser` concurrently, and writes a comparison CSV to
-    ``output_csv``.
+    batches of ``batch_size`` using all four analysers concurrently, and writes
+    a comparison CSV to ``output_csv``.
 
     Prints a summary of aligned vs misaligned results on completion.
 
@@ -144,10 +143,10 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
         for r in misaligned:
             print(
                 f"  {r['filename']}: "
-                f"mistral=({r['mistral_id_doc']}, {r['mistral_document_id_type']}, {r['mistral_document_type']}) "
-                f"azure=({r['azure_id_doc']}, {r['azure_document_id_type']}, {r['azure_document_type']}) "
-                f"mistral_vision=({r['mistral_vision_id_doc']}, {r['mistral_vision_document_id_type']}, {r['mistral_vision_document_type']}) "
-                f"azure_vision=({r['azure_vision_id_doc']}, {r['azure_vision_document_id_type']}, {r['azure_vision_document_type']})"
+                f"mistral=({r['mistral_is_doc_id']}, {r['mistral_id_doc_type']}, {r['mistral_doc_type']}) "
+                f"azure=({r['azure_is_doc_id']}, {r['azure_id_doc_type']}, {r['azure_doc_type']}) "
+                f"mistral_vision=({r['mistral_vision_is_doc_id']}, {r['mistral_vision_id_doc_type']}, {r['mistral_vision_doc_type']}) "
+                f"azure_vision=({r['azure_vision_is_doc_id']}, {r['azure_vision_id_doc_type']}, {r['azure_vision_doc_type']})"
             )
 
 

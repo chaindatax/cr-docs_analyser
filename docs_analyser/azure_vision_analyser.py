@@ -39,7 +39,7 @@ class AzureVisionAnalyser(Analyser):
 
         data = json.loads(response.choices[0].message.content)
         return AnalysisResult(
-            id_doc=data["id_doc"],
-            document_id_type=data["document_id_type"],
-            document_type=data["document_type"],
+            is_doc_id=data["is_doc_id"],
+            id_doc_type=data["id_doc_type"],
+            doc_type=data["doc_type"],
         )

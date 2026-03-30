@@ -89,8 +89,8 @@ def test_mistral_analyser_on_dataset(file_path):
     from docs_analyser.mistral_analyser import MistralAnalyser
     result = MistralAnalyser().runner(str(file_path))
     assert isinstance(result, AnalysisResult)
-    assert isinstance(result.id_doc, bool)
-    assert isinstance(result.document_type, str)
+    assert isinstance(result.is_doc_id, bool)
+    assert isinstance(result.doc_type, str)
 
 
 @needs_mistral
@@ -101,8 +101,8 @@ def test_mistral_vision_analyser_on_dataset(file_path):
     result = MistralVisionAnalyser().runner(str(file_path))
     pprint(f"result: {result}")
     assert isinstance(result, AnalysisResult)
-    assert isinstance(result.id_doc, bool)
-    assert isinstance(result.document_type, str)
+    assert isinstance(result.is_doc_id, bool)
+    assert isinstance(result.doc_type, str)
 
 
 @needs_azure_cu
@@ -111,8 +111,8 @@ def test_azure_analyser_on_dataset(file_path):
     from docs_analyser.azure_analyser import AzureAnalyser
     result = AzureAnalyser().runner(str(file_path))
     assert isinstance(result, AnalysisResult)
-    assert isinstance(result.id_doc, bool)
-    assert isinstance(result.document_type, str)
+    assert isinstance(result.is_doc_id, bool)
+    assert isinstance(result.doc_type, str)
 
 
 @needs_azure_oai
@@ -123,5 +123,5 @@ def test_azure_vision_analyser_on_dataset(file_path):
     result = AzureVisionAnalyser().runner(str(file_path))
     pprint(f"result: {result}")
     assert isinstance(result, AnalysisResult)
-    assert isinstance(result.id_doc, bool)
-    assert isinstance(result.document_type, str)
+    assert isinstance(result.is_doc_id, bool)
+    assert isinstance(result.doc_type, str)
