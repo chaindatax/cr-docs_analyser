@@ -1,6 +1,18 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+FIELD_DEFINITIONS: dict[str, dict] = {
+    "id_doc": {
+        "type": "boolean",
+        "description": "Is this document related to the identification of a person?",
+    },
+    "document_type": {
+        "type": "string",
+        "description": "Type of identity document: 'id card', 'passport', or 'other'",
+    },
+}
+"""Shared field definitions used by all analysers to extract ``id_doc`` and ``document_type``."""
+
 
 @dataclass
 class AnalysisResult:

@@ -5,7 +5,7 @@ import os
 from mistralai.client import Mistral
 from mistralai.client.models import JSONSchema, ResponseFormat
 
-from docs_analyser.base import AnalysisResult, Analyser
+from docs_analyser.base import FIELD_DEFINITIONS, AnalysisResult, Analyser
 
 
 class MistralAnalyser(Analyser):
@@ -49,16 +49,7 @@ class MistralAnalyser(Analyser):
                     name="response_schema",
                     schema_definition={
                         "type": "object",
-                        "properties": {
-                            "document_type": {
-                                "type": "string",
-                                "description": "Type of document: 'id card', 'passport', or 'other'",
-                            },
-                            "id_doc": {
-                                "type": "boolean",
-                                "description": "Is this document related to the identification of a person?",
-                            },
-                        },
+                        "properties": FIELD_DEFINITIONS,
                     },
                     strict=True,
                 ),

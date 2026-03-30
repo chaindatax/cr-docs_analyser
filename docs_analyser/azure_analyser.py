@@ -5,7 +5,7 @@ from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import ResourceNotFoundError
 from azure.identity import DefaultAzureCredential
 
-from docs_analyser.base import AnalysisResult, Analyser
+from docs_analyser.base import AnalysisResult, Analyser, FIELD_DEFINITIONS
 
 IDENTITY_ANALYZER_ID = "identityDocClassifier"
 IDENTITY_ANALYZER_DEFINITION = {
@@ -14,16 +14,7 @@ IDENTITY_ANALYZER_DEFINITION = {
     "baseAnalyzerId": "prebuilt-document",
     "models": {"completion": "gpt-4.1", "embedding": "text-embedding-3-large"},
     "fieldSchema": {
-        "fields": {
-            "id_doc": {
-                "type": "boolean",
-                "description": "Is this document related to the identification of a person?",
-            },
-            "document_type": {
-                "type": "string",
-                "description": "Type of identity document, one of: 'id card', 'passport', 'other'",
-            },
-        }
+        "fields": FIELD_DEFINITIONS
     },
 }
 
