@@ -49,14 +49,19 @@ class AzureAnalyser(Analyser):
         self._ensure_analyzer()
 
     def _ensure_analyzer(self):
-        """Create the custom analyzer on the Azure resource if it does not exist."""
+        """Create or update the custom analyzer to match the current field schema."""
         try:
-            self._client.get_analyzer(IDENTITY_ANALYZER_ID)
+            existing = self._client.get_analyzer(IDENTITY_ANALYZER_ID)
+            existing_fields = set(existing.get("fieldSchema", {}).get("fields", {}).keys())
+            expected_fields = set(FIELD_DEFINITIONS.keys())
+            if existing_fields == expected_fields:
+                return
+            print(f"Field schema changed, recreating analyzer '{IDENTITY_ANALYZER_ID}'...")
         except ResourceNotFoundError:
             print(f"Creating analyzer '{IDENTITY_ANALYZER_ID}'...")
-            self._client.begin_create_analyzer(
-                IDENTITY_ANALYZER_ID, IDENTITY_ANALYZER_DEFINITION, allow_replace=True
-            ).result()
+        self._client.begin_create_analyzer(
+            IDENTITY_ANALYZER_ID, IDENTITY_ANALYZER_DEFINITION, allow_replace=True
+        ).result()
 
     def runner(self, file_path: str) -> AnalysisResult:
         """Analyse a document image using Azure Content Understanding.

@@ -35,8 +35,9 @@ class MistralVisionAnalyser(Analyser):
         )
 
         data = json.loads(response.choices[0].message.content)
+        doc_type = data["doc_type"]
         return AnalysisResult(
             is_doc_id=data["is_doc_id"],
             id_doc_type=data["id_doc_type"],
-            doc_type=data["doc_type"],
+            doc_type=json.dumps(doc_type) if not isinstance(doc_type, str) else doc_type,
         )
