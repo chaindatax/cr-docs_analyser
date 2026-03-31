@@ -1,7 +1,7 @@
 
 
 
-![img.png](docs/img.png)
+![docs/img.png](docs/img.png)
 
 ## Conclusion — Performance des modèles sur `is_doc_id`
 
