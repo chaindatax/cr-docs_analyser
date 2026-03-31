@@ -19,7 +19,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=8.0",
+    "pytest-html>=4.2.0",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
+addopts = "--html=reports/test-report.html --self-contained-html"

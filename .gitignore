@@ -166,3 +166,4 @@ cython_debug/
 /docs/personal_coach.puml
 
 .idea
+reports/
