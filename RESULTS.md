@@ -1,5 +1,17 @@
 
+## Solution Proposée
 
+Overview synaptique de la solution, intégrée avec les applications et les services existants (GED, Systèmes legacy, opérationnels, ...)
+
+
+![img.png](docs/diagram_overview.png)
+
+Overview de la solution, l'application 'data science' créée dans ce repo.
+
+![data_science_project.png](docs/data_science_project.png)
+
+
+## Résultats de l'analyse & performances des modèles
 
 ![docs/img.png](docs/img.png)
 
