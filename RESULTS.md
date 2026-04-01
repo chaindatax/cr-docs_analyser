@@ -52,4 +52,23 @@ L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 no
 3. **Exploiter `id_doc_type`** comme filtre secondaire pour affiner la décision au-delà du booléen.
 
 
+## Métriques d'évaluation — rappel
+
+| Métrique | Formule | Ce qu'elle mesure | Plage | Objectif | Quand l'utiliser |
+|---|---|---|---|---|---|
+| **Accuracy** | (TP + TN) / Total | Part des prédictions correctes (toutes classes) | [0, 1] | → 1 | Classes équilibrées |
+| **Precision** | TP / (TP + FP) | Parmi les positifs prédits, combien sont vrais | [0, 1] | → 1 | Coût élevé des faux positifs |
+| **Recall** | TP / (TP + FN) | Parmi les vrais positifs, combien sont détectés | [0, 1] | → 1 | Coût élevé des faux négatifs |
+| **F1** | 2 × (P × R) / (P + R) | Moyenne harmonique Precision/Recall | [0, 1] | → 1 | Classes déséquilibrées |
+| **MCC** | (TP·TN − FP·FN) / √(...) | Corrélation entre prédictions et réalité | [−1, 1] | → 1 | Déséquilibre sévère, vision globale |
+
+> **Légende :** TP = vrai positif · TN = vrai négatif · FP = faux positif · FN = faux négatif  
+> **Valeurs de référence MCC :** −1 = prédictions systématiquement inverses · 0 = aléatoire · +1 = parfait
+
+### Règles d'or
+- **Accuracy** trompe sur des classes déséquilibrées (ex : 95% de classe majoritaire).  
+- **Precision vs Recall** : arbitrage selon le coût métier de chaque type d'erreur.  
+- **F1** synthétise les deux, mais suppose que Precision et Recall ont le même poids.  
+- **MCC** est le seul indicateur symétrique sur toutes les cases de la matrice de confusion — privilégié en contexte médical, fraud detection, KYC/AML.
+- 
 
