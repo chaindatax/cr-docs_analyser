@@ -19,41 +19,40 @@ Overview de la solution, l'application 'data science' créée dans ce repo.
 
 ![docs/img.png](docs/img.png)
 
-## Conclusion — Performance des modèles sur `is_doc_id`
+### Conclusion — Performance des modèles sur `is_doc_id`
 
-L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 non-identité), évalués sur trois modèles disposant de résultats complets. Azure CU n'a produit aucune prédiction et est exclu.
-
-> **Note méthodologique** — ROC AUC n'est pas utilisé ici : il requiert des scores de confiance continus pour faire varier un seuil. Avec des sorties booléennes, la "courbe" ROC se réduit à un unique point et l'AUC est équivalente à la balanced accuracy, sans apport supplémentaire. Les matrices de confusion et les métriques F1/MCC sont plus adaptées.
+L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 non-identité), évalués sur les **quatre modèles** — tous ont produit des prédictions complètes, sauf Mistral Vision (n=39, une prédiction manquante).
 
 ### Résultats
 
-| Modèle | Accuracy | Precision | Recall | F1 | MCC |
-|---|---|---|---|---|---|
-| **Mistral OCR** | **0.78** | **0.71** | **1.00** | **0.83** | **0.60** |
-| Mistral Vision | 0.75 | 0.69 | 1.00 | 0.81 | 0.55 |
-| Azure Vision | 0.75 | 0.69 | 1.00 | 0.81 | 0.55 |
+| Modèle | n | Accuracy | Precision | Recall | F1 | MCC | TP | TN | FP | FN |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Azure CU** | **40** | **0.80** | **0.73** | **1.00** | **0.85** | **0.64** | 22 | 10 | 8 | 0 |
+| Mistral OCR | 40 | 0.78 | 0.71 | 1.00 | 0.83 | 0.60 | 22 | 9 | 9 | 0 |
+| Azure Vision | 40 | 0.78 | 0.71 | 1.00 | 0.83 | 0.60 | 22 | 9 | 9 | 0 |
+| Mistral Vision | 39 | 0.77 | 0.71 | 1.00 | 0.83 | 0.58 | 22 | 8 | 9 | 0 |
 
 ### Points clés
 
-**Recall parfait (1.00) sur les trois modèles** — aucun document d'identité réel n'est manqué. C'est la propriété la plus critique en vérification documentaire : un faux négatif représente un risque métier majeur.
+**Recall parfait (1.00) sur les quatre modèles** — aucun document d'identité réel n'est manqué. C'est la propriété la plus critique en vérification documentaire : un faux négatif représente un risque métier majeur.
 
-**Mistral OCR est le meilleur modèle** (F1 = 0.83, MCC = 0.60), devant Mistral Vision et Azure Vision à égalité (F1 = 0.81, MCC = 0.55). L'écart est faible, ce qui suggère que l'OCR n'apporte pas d'avantage décisif sur la vision pure pour cette tâche.
+**Azure CU est le meilleur modèle** (F1 = 0.85, MCC = 0.64, 8 FP), devançant Mistral OCR et Azure Vision à égalité (F1 = 0.83, MCC = 0.60, 9 FP). Mistral Vision est légèrement en retrait (MCC = 0.58) et compte une prédiction manquante.
 
-**Precision modérée (~0.69–0.71)** — 9 à 10 faux positifs sur 40 fichiers, tous issus de la catégorie `false_id` (photos de documents sur Internet). Cette catégorie est intrinsèquement ambiguë pour les modèles.
+**Tous les faux positifs proviennent du dossier `false_id`** — images de documents d'identité trouvées sur Internet. Ces visuels ressemblent à de vrais documents (résolution acceptable, structure visible) : le modèle réagit à l'apparence du document, pas à son authenticité. C'est un biais structurel du jeu de données, pas une erreur de modèle.
 
-**MCC entre 0.55 et 0.60** — performance correcte mais en deçà du seuil recommandé pour la production (> 0.80).
+**MCC entre 0.58 et 0.64** — performance correcte mais en deçà du seuil recommandé pour la production (> 0.80). L'écart entre les modèles est faible : l'approche OCR n'apporte pas d'avantage décisif sur la vision pure pour cette tâche binaire.
 
 ### Limites
 
-- **Dataset petit** (n=40) — les métriques sont sensibles à 1 ou 2 exemples.
-- **Azure CU non évalué** — à relancer.
-- **`false_id` ambiguë** — images de documents web, pas des faux documents réels.
+- **Dataset petit** (n=40) — les métriques sont sensibles à 1 ou 2 exemples (1 FP de moins = +0.04 MCC).
+- **`false_id` ambiguë** — images de documents web, pas des faux documents réels. Les FP sur cette catégorie ne reflètent pas forcément le comportement en production.
+- **3 fichiers non analysés** — les documents CORUM et l'attestation PDF ne figurent pas dans `results.csv`.
 
 ### Recommandations
 
-1. **Étendre le dataset** avec plus de cas négatifs réels pour réduire les faux positifs.
-2. **Relancer Azure CU** pour la comparaison complète sur 4 modèles.
-3. **Exploiter `id_doc_type`** comme filtre secondaire pour affiner la décision au-delà du booléen.
+1. **Azure CU à privilégier** pour les déploiements, avec 1 FP de moins que les autres modèles.
+2. **Étendre le dataset** avec des cas négatifs réels (factures, relevés bancaires) pour confirmer la robustesse — les 9 faux positifs actuels sont tous des images de documents.
+3. **Exploiter `id_doc_type`** comme filtre secondaire (passeport vs carte d'identité) pour affiner la décision au-delà du booléen.
 
 
 ## Métriques d'évaluation — rappel
@@ -66,16 +65,14 @@ L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 no
 | **F1** | 2 × (P × R) / (P + R) | Moyenne harmonique Precision/Recall | [0, 1] | → 1 | Classes déséquilibrées |
 | **MCC** | (TP·TN − FP·FN) / √(...) | Corrélation entre prédictions et réalité | [−1, 1] | → 1 | Déséquilibre sévère, vision globale |
 
-> **Légende :** TP = vrai positif · TN = vrai négatif · FP = faux positif · FN = faux négatif  
+> **Légende :** TP = vrai positif · TN = vrai négatif · FP = faux positif · FN = faux négatif
 > **Valeurs de référence MCC :** −1 = prédictions systématiquement inverses · 0 = aléatoire · +1 = parfait
 
 ### Règles d'or
-- **Accuracy** trompe sur des classes déséquilibrées (ex : 95% de classe majoritaire).  
-- **Precision vs Recall** : arbitrage selon le coût métier de chaque type d'erreur.  
-- **F1** synthétise les deux, mais suppose que Precision et Recall ont le même poids.  
+- **Accuracy** trompe sur des classes déséquilibrées (ex : 95% de classe majoritaire).
+- **Precision vs Recall** : arbitrage selon le coût métier de chaque type d'erreur.
+- **F1** synthétise les deux, mais suppose que Precision et Recall ont le même poids.
 - **MCC** est le seul indicateur symétrique sur toutes les cases de la matrice de confusion — privilégié en contexte médical, fraud detection, KYC/AML.
-- 
-
 
 ## Setup
 
