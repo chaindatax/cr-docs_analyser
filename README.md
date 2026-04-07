@@ -19,15 +19,15 @@ Overview de la solution, l'application 'data science' créée dans ce repo.
 
 ![docs/img.png](docs/img.png)
 
-### Conclusion — Performance des modèles sur `is_doc_id`
+## Conclusion — Performance des modèles sur `is_doc_id`
 
-L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 non-identité), évalués sur les **quatre modèles** — tous ont produit des prédictions complètes, sauf Mistral Vision (n=39, une prédiction manquante).
+L'analyse porte sur **43 fichiers** labellisés (22 documents d'identité, 21 non-identité). Azure CU couvre l'ensemble du dataset (n=43) ; Mistral OCR et Azure Vision en couvrent 40, Mistral Vision 39 (prédictions manquantes sur certains fichiers).
 
 ### Résultats
 
 | Modèle | n | Accuracy | Precision | Recall | F1 | MCC | TP | TN | FP | FN |
 |---|---|---|---|---|---|---|---|---|---|---|
-| **Azure CU** | **40** | **0.80** | **0.73** | **1.00** | **0.85** | **0.64** | 22 | 10 | 8 | 0 |
+| **Azure CU** | **43** | **0.84** | **0.76** | **1.00** | **0.86** | **0.71** | 22 | 14 | 7 | 0 |
 | Mistral OCR | 40 | 0.78 | 0.71 | 1.00 | 0.83 | 0.60 | 22 | 9 | 9 | 0 |
 | Azure Vision | 40 | 0.78 | 0.71 | 1.00 | 0.83 | 0.60 | 22 | 9 | 9 | 0 |
 | Mistral Vision | 39 | 0.77 | 0.71 | 1.00 | 0.83 | 0.58 | 22 | 8 | 9 | 0 |
@@ -36,24 +36,17 @@ L'analyse porte sur **40 fichiers** labellisés (22 documents d'identité, 18 no
 
 **Recall parfait (1.00) sur les quatre modèles** — aucun document d'identité réel n'est manqué. C'est la propriété la plus critique en vérification documentaire : un faux négatif représente un risque métier majeur.
 
-**Azure CU est le meilleur modèle** (F1 = 0.85, MCC = 0.64, 8 FP), devançant Mistral OCR et Azure Vision à égalité (F1 = 0.83, MCC = 0.60, 9 FP). Mistral Vision est légèrement en retrait (MCC = 0.58) et compte une prédiction manquante.
+**Azure CU est nettement le meilleur modèle** (F1 = 0.86, MCC = 0.71, 7 FP sur 43 fichiers), avec un avantage clair sur les trois autres modèles (F1 = 0.83, MCC = 0.58–0.60, 9 FP). Azure CU est aussi le seul à avoir analysé la totalité du dataset sans prédictions manquantes.
 
-**Tous les faux positifs proviennent du dossier `false_id`** — images de documents d'identité trouvées sur Internet. Ces visuels ressemblent à de vrais documents (résolution acceptable, structure visible) : le modèle réagit à l'apparence du document, pas à son authenticité. C'est un biais structurel du jeu de données, pas une erreur de modèle.
+**Tous les faux positifs proviennent des dossiers `false_id` et `false_doc`** — images de documents d'identité trouvées sur Internet, ou documents administratifs visuellement proches. Les modèles réagissent à l'apparence visuelle du document, pas à son authenticité. C'est un biais structurel du jeu de données. Les 7 FP d'Azure CU sont tous dans `false_id` ; Mistral OCR étend ses erreurs à un fichier `false_doc` supplémentaire.
 
-**MCC entre 0.58 et 0.64** — performance correcte mais en deçà du seuil recommandé pour la production (> 0.80). L'écart entre les modèles est faible : l'approche OCR n'apporte pas d'avantage décisif sur la vision pure pour cette tâche binaire.
-
-### Limites
-
-- **Dataset petit** (n=40) — les métriques sont sensibles à 1 ou 2 exemples (1 FP de moins = +0.04 MCC).
-- **`false_id` ambiguë** — images de documents web, pas des faux documents réels. Les FP sur cette catégorie ne reflètent pas forcément le comportement en production.
-- **3 fichiers non analysés** — les documents CORUM et l'attestation PDF ne figurent pas dans `results.csv`.
+**MCC entre 0.58 et 0.71** — Azure CU atteint un niveau correct (0.71) tandis que les autres modèles restent en deçà du seuil recommandé pour la production (> 0.80). L'approche OCR structurée d'Azure CU apporte ici un gain mesurable par rapport à la vision pure.
 
 ### Recommandations
 
-1. **Azure CU à privilégier** pour les déploiements, avec 1 FP de moins que les autres modèles.
-2. **Étendre le dataset** avec des cas négatifs réels (factures, relevés bancaires) pour confirmer la robustesse — les 9 faux positifs actuels sont tous des images de documents.
+1. **Azure CU à privilégier** : meilleur MCC (0.71 vs 0.60), moins de faux positifs (7 vs 9), couverture complète du dataset.
+2. **Étendre le dataset** avec des cas négatifs réels (factures, relevés bancaires) pour confirmer la robustesse — les faux positifs actuels sont tous des images de documents d'identité.
 3. **Exploiter `id_doc_type`** comme filtre secondaire (passeport vs carte d'identité) pour affiner la décision au-delà du booléen.
-
 
 ## Métriques d'évaluation — rappel
 
