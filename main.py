@@ -113,7 +113,7 @@ async def analyse_all(dataset_dir: Path, output_csv: Path, batch_size: int = BAT
         output_csv: Destination path for the CSV output.
         batch_size: Number of files to process concurrently per batch.
     """
-    files = sorted(dataset_dir.rglob("*.jpg")) + sorted(dataset_dir.rglob("*.png"))
+    files = sorted(dataset_dir.rglob("*.jpg")) + sorted(dataset_dir.rglob("*.png")) + sorted(dataset_dir.rglob("*.pdf"))
     print(f"Found {len(files)} files, processing in batches of {batch_size}...\n")
 
     mistral = MistralAnalyser()
