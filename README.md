@@ -176,6 +176,30 @@ The container is expected to mirror the local folder structure (blobs named `id_
 >
 > In the Azure Portal: *Storage account → Shared access signature → Allowed permissions → check Read + List → Resource type = Container + Object*.
 
+## Pre-processing — PDF to JPG
+
+The AI vision analysers work on images. PDFs must be converted to JPG (one image per page) before running `main.py`. The `preprocess_pdfs.py` script handles this for both local and blob sources.
+
+```bash
+uv run preprocess_pdfs.py                        # local dataset/
+BLOB_SAS_URL="https://..." uv run preprocess_pdfs.py   # Azure Blob Storage
+```
+
+**What it does:**
+- Finds all `.pdf` files in the dataset (local directory or blob container)
+- Converts each page to a JPG using `pymupdf` (no Poppler dependency)
+- Names output files `<original_stem>_p001.jpg`, `_p002.jpg`, …
+- Deletes the original PDF after conversion (set `PDF_KEEP_ORIGINALS=true` to keep)
+
+**Options (env vars):**
+
+| Variable | Default | Description |
+|---|---|---|
+| `PDF_DPI` | `150` | Render resolution — increase for better quality |
+| `PDF_KEEP_ORIGINALS` | `false` | Keep the source PDF after conversion |
+
+> **Azure SAS permissions:** the blob source requires **Read + List + Write + Delete** permissions to download PDFs, upload JPGs, and remove the originals.
+
 ## Architecture
 
 ```
