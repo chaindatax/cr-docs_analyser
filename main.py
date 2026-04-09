@@ -1,3 +1,25 @@
+"""Batch document analyser — main entry point.
+
+Analyses every image/PDF in the dataset (local or Azure Blob Storage) using up
+to four AI backends in parallel and writes a comparison CSV.
+
+Dataset source is controlled by ``BLOB_SAS_URL``:
+
+- **Local** (default): reads files from ``dataset/`` recursively.
+- **Azure Blob Storage**: lists blobs and analyses them via their SAS URLs
+  without any local download.
+
+Active analysers are controlled by ``MISTRAL_ENABLED`` and ``AZURE_ENABLED``
+(both default to ``true``).  Files are processed in concurrent batches of
+``BATCH_SIZE`` (default: 10).
+
+Usage::
+
+    uv run main.py
+    BLOB_SAS_URL="https://..." uv run main.py
+    MISTRAL_ENABLED=false uv run main.py
+"""
+
 import asyncio
 import csv
 import os

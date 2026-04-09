@@ -1,6 +1,23 @@
-"""Rename dataset files to the format:
-<IdContact>_<IdCourier>_<CodeTypologie>_<NomFichierXelians>.<extension>
-Also updates dataset_labels.csv and results.csv with the new filenames.
+"""Rename dataset files and update accompanying CSV files.
+
+Each file is renamed to::
+
+    <IdContact>_<IdCourier>_<CodeTypologie>_<NomFichierXelians>.<extension>
+
+where:
+
+- ``IdContact`` — random UUID v4.
+- ``IdCourier`` — random ``RE`` + 10 digits string.
+- ``CodeTypologie`` — fixed code per subdirectory (see :data:`TYPOLOGIE_MAP`).
+- ``NomFichierXelians`` — original filename preserved as a suffix.
+
+After renaming, ``dataset_labels.csv`` and ``results.csv`` are updated in-place
+so that their ``filename`` columns reference the new names.
+
+Usage::
+
+    uv run rename_dataset.py           # rename files
+    uv run rename_dataset.py --dry     # preview changes without touching files
 """
 
 import csv
@@ -27,10 +44,12 @@ _PREFIX_LEN = 36 + 1 + 12 + 1 + 4 + 1
 
 
 def random_uuid() -> str:
+    """Return a random UUID v4 as a string."""
     return str(uuid.uuid4())
 
 
 def random_courier_id() -> str:
+    """Return a random courier identifier of the form ``RE`` + 10 digits."""
     digits = "".join(random.choices(string.digits, k=10))
     return f"RE{digits}"
 
@@ -123,6 +142,13 @@ def _update_csv_file(
 
 
 def update_csvs(rename_map: dict[tuple[str, str], str], dry_run: bool = False) -> None:
+    """Update ``dataset_labels.csv`` and ``results.csv`` with the rename map.
+
+    Args:
+        rename_map: Mapping of ``(subdir, old_filename)`` to ``new_filename``
+            as returned by :func:`rename_files`.
+        dry_run: When ``True``, print what would be changed without writing.
+    """
     _update_csv_file(LABELS_CSV, rename_map, delimiter=",", dry_run=dry_run)
     _update_csv_file(RESULTS_CSV, rename_map, delimiter=";", dry_run=dry_run)
 

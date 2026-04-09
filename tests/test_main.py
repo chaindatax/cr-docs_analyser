@@ -1,3 +1,13 @@
+"""Integration tests that run each analyser against a real file from the dataset.
+
+Tests are skipped automatically when the required environment variables are not
+set, so they can coexist with CI pipelines that lack API credentials.
+
+``SAMPLE_FILES`` is a parametrised fixture that picks the first sorted file from
+each leaf subdirectory of ``dataset/``, giving at least one representative
+sample per document category.
+"""
+
 import csv
 import os
 from pathlib import Path
@@ -22,7 +32,8 @@ LABELS_CSV = Path(__file__).parent.parent / "dataset_labels.csv"
 
 
 
-def _collect_dataset_files():
+def _collect_dataset_files() -> list:
+    """Return all supported image/PDF files found under ``DATASET_DIR``."""
     from main import DATASET_DIR
     files = []
     for ext in EXTENSIONS:

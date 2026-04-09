@@ -1,3 +1,10 @@
+"""Unit tests for all four analysers using mocked API clients.
+
+No real API calls are made; all external clients are replaced with
+:class:`~unittest.mock.MagicMock` instances so these tests run offline and
+without any credentials.
+"""
+
 import base64
 import csv
 import json
@@ -67,7 +74,13 @@ def test_mistral_encodes_file_as_base64(tmp_path):
 
 # --- AzureAnalyser ---
 
-def _make_azure_analyser():
+def _make_azure_analyser() -> tuple[AzureAnalyser, MagicMock]:
+    """Create an :class:`AzureAnalyser` with a fully mocked Azure client.
+
+    Returns:
+        ``(analyser, mock_client)`` — the configured analyser and the
+        underlying mock so callers can inspect or configure API call results.
+    """
     mock_client = MagicMock()
     mock_client.get_analyzer.return_value = MagicMock()
     env = {
@@ -133,6 +146,12 @@ def test_mistral_vision_returns_analysis_result(tmp_path):
 # --- AzureVisionAnalyser ---
 
 def _make_azure_vision_analyser():
+    """Create an :class:`AzureVisionAnalyser` with a fully mocked Azure OpenAI client.
+
+    Returns:
+        ``(analyser, mock_client)`` — the configured analyser and the
+        underlying mock so callers can inspect or configure API call results.
+    """
     mock_client = MagicMock()
     env = {
         "AZURE_OPENAI_KEY": "fake-key",
