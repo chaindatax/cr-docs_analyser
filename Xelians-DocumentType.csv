@@ -1,0 +1,235 @@
+XeliansCode,Description,FrenchLabel,EnglishLabel
+A001,Dossier de souscription Arkéa (PP),Dossier de souscription Arkéa (PP),Arkea subscription form (Individual)
+A002,Dossier de souscription Arkéa (2PP),Dossier de souscription Arkéa (2PP),Arkea subscription form (Two individual)
+A003,Dossier de souscription Arkéa (PM),Dossier de souscription Arkéa (PM),Arkea subscription form (Legal entity)
+C001,BS CC - Souscription,CORUM Origin - Bulletin de souscription,CORUM Origin - Subscription Form
+C002,TITRE DE PROPRIETE,Titre de propriété,Title of ownership
+C003,IBAN RIB CHEQUE,IBAN RIB Chèque,IBAN Bank Account Details (Cheque)
+C004,CARTE ID ,Carte ID,Identity card
+C080,PIÈCE D'IDENTITÉ ASSURÉ,ID assuré,Insured ID
+C005,PASSEPORT ,Passeport,Passport
+C006,AUTRE JUSTIF IDENTITE ,Autre justificatif d'identité,Other proof of identity
+C007,JUSTIFICATIF DE DOMICILE,Justificatif de domicile,Proof of address
+C008,JUSTIFICATIF DE DOMICILE CHARGES,Justificatif de domicile (charges),Proof of address (utilities bills)
+C009,JUSTIFICATIF DE DOMICILE LOYER,Justificatif de domicile (loyer),Proof of address (rent receipt)
+C010,JUSTIFICATIF DE DOMICILE IMPOSITION,Justificatif de domicile (imposition),Proof of address (tax assessment)
+C011,JUSTIFICATIF DE DOMICILE AUTRES,Justificatif de domicile (autres),Proof of address (other)
+C012,KBIS  STATUTS,KBIS statuts,Tax assessment notice
+C013,QEE - QUESTIONNAIRE - Personne,CORUM AM - Questionnaire d'entrée en relation,CORUM AM - Client onboarding questionnaire
+C014,ATTESTATION DISPENSE DU PRELEVEMENT OBLIGATOIRE,Attestation de dispense du prélèvement obligatoire,Certificate of exemption from mandatory levy
+C015,DECLARATION DE NON CONDAMNATION ,Déclaration de non condamnation,Declaration of no conviction
+C016,ATTEST. DISPENSE PRELEVEMENT OBLIGATOIRE - ACOMPTE REV. FINAN.,Attestation de dispense du prélèvement obligatoire (Acompte rev. finan),Certificate of exemption from mandatory levy (Financial income installment)
+C017,AVIS IMPOSITION,Avis d'imposition,Tax assessment notice
+C018,BULLETINS DE SALAIRES,Bulletins de salaires,Payslips
+C019,JUSTIFICATIF ORIGINE DES FONDS,Justificatif d'origine des fonds,Proof of the origin of funds
+C020,RELEVES DE COMPTES DEPARGNE,Relevés de comptes d'épargne,Savings account statement
+C021,COURRIER AVEC OBJET REGLEMENT ET CHEQUE EMIS PAR LE NOTAIRE,Courrier avec objet de règlement et chèque émis par le notaire,Letter regarding settlement and cheque issued by the notary
+C022,ACTE DE VENTE ET OU DU CHEQUE EMIS PAR LE NOTAIRE,Acte de vente et de règlement ou chèque émis par le notaire,Deed of sale and settlement or cheque issued by the notary
+C023,RELEVE OPERATION DE VENTE DES TITRES,Releve de règlement des chèque émis vente des titres,Statement of settlement of cheques issued for the sale of securities
+C024,CHEQUE EMIS PAR ENTREPRISE,Chèque émis par l'entreprise,Cheque issued by the company
+C025,COURRIER EMIS PAR ENTREPRISE,Courrier émis par l'entreprise,Letter issued by the company
+C026,RELEVE D OPERATION DE REEMPLOI DES FONDS,Relevé de règlement de réemploi des fonds,Statement of settlement for reinvestment of funds
+C027,AUTRE JUSTIF. MENTIONNANT LE MONTANT ET ORIGINE DU VERSEMENT,Autre justificatif mentionnant le montant et l'origine du versement,Other proof mentioning the amount and origin of the payment
+C028,ACCORD DE NANTISSEMENT,Accord de nantissement,Pledge agreement
+C029,MADEM - MANDAT DE DEMEMBREMENT ,Mandat de demembrement,Disentanglement mandate
+C030,JUSTIFICATIFS SITUATION MATRIMONIALE,Justificatif de situation matrimoniale,Proof of marital status
+C031,AUTRES,Autres,Others
+C032,IFU,Imprimé fiscal unique (IFU),Single fiscal form (IFU)
+C033,CNP,CNP,CNP
+C034,FACTURE,Facture ,Invoice
+C035,CGP - CONVENTION ET AVENANT,CGP - Convention et avenant,IFA - Agreement and addendum
+C036,CGP - PIECE JUSTIFICATIVE,CGP - Pièce justificative,IFA - Supporting document
+C037,CGP - RELEVE DE COMMISION,CGP - Relevé de commission,IFA - Commission statement
+C038,STATUTS,Statuts,Articles of association
+C039,CHEQUE ,Chèque,Cheque
+C040,IBAN RIB ,IBAN RIB,IBAN Bank Account Details
+C041,NOTICE / CGV / CONDITIONS,Notice / CGV / Conditions,Notice / General Terms and Conditions
+C042,REINVESTISSEMENT DIVIDENDES,Réinvestissement des dividendes,Dividend collection
+C043,IFU,Imprimé fiscal unique (IFU),Single fiscal form (IFU)
+C044,RELEVE TRIMESTRIEL,Relevé trimestriel,Quarterly statement
+C045,DECLARATION BENEFICIARE EFFECTIF,Déclaration bénéficiaire effectif,Declaration of beneficial owner
+C046,EXTRAIT DENREGISTREMENT AU RCS,Extrait d'enregistrement au RCS,Extract of registration with the Trade and Companies Register
+C047,ID DIRIGEANT,ID dirigeant,Manager's ID
+C048,ID BENEFICIAIRE,ID bénéficiaire,Beneficiary ID
+C049,LETTRE DE MISSION,Lettre de mission,Letter of engagement
+C050,DOCUMENT D ENTRE EN RELATION,Document d'entrée en relation,Client onboarding document
+C051,DECLARATION D ADEQUATION,Déclaration d'adéquation,Appropriateness declaration
+C052,DICI,Document d'information clé pour l'investisseur,Key investor information document (KIID)
+C053,ATTESTATION RACHAT ASSURANCE-VIE,Attestation de rachat assurance-vie,Life insurance surrender certificate
+C054,ATTESTATION SUCCESSION,Attestation de succession,Inheritance certificate
+C055,ATTESTATION DONATION,Attestation de donation,Donation certificate
+C056,ATTESTATION ÉPARGNE SALARIALE,Attestation d'épargne salariale,Employee savings certificate
+C057,PIÈCE DIDENTITÉ REPRÉSENTANT LÉGAL,ID représentant légal,Legal representative ID
+C058,LIVRET DE FAMILLE,Livret de famille,Family record book
+C059,ATTESTATION DHÉBERGEMENT,Attestation d'hébergement,Accommodation certificate
+C060,PIÈCE DIDENTITÉ DE LHÉBERGEUR,ID hébergeur,Host ID
+C061,CORUM EPARGNE - Lettre de mission demarchage,CORUM L'Epargne - Lettre de mission (démarchage),CORUM L'Épargne - Letter of engagement (canvassing)
+C062,CORUM EPARGNE - Entree en relation demarchage,CORUM L'Epargne - Entrée en relation (démarchage),CORUM L'Épargne - Client onboarding (canvassing)
+C063,EPARGNE - Déclaration dadéquation,CORUM L'Epargne - Déclaration d'adéquation,CORUM L'Épargne - Appropriateness declaration
+C064,LIVRET DE FAMILLE/ACTE DE NAISSANCE,Livret de famille/Acte de naissance,Family record book/Birth certificate
+C065,NPAI-PND,NPAI-PND,Undeliverable as Addressed - Moved; Left No Forwarding Address
+C066,PARRAINAGE - Bulletin de versement de la récompense,Offre de parrainage - Bulletin de versement récompense,Referral offer - Reward payment form
+C067,CGP - Orias,CPG - Orias,CPG - Orias
+C068,ID CO-SOUSCRIPTEUR,ID Co-souscripteur,Co-subscriber ID
+C069,AUDIT DOCUMENT CONTROLS,Documents d'audit/contrôle,Audit control document
+C070,SCPI - Document dInformations Clés (KID),CORUM AM - Document d'informations clés,CORUM AM - Key information document
+C071,SCPI - Simulation des frais,CORUM AM - Simulation des frais,CORUM AM - Fee simulation
+C072,CORUM LEPARGNE - CONVENTION DE SOUS-DISTRIBUTION LIFE (FR),CORUM L'Epargne - Convention de sous-distribution (LIFE) (FR),CORUM L'Épargne - Sub-distribution agreement (LIFE) (FR)
+C073,CORUM LEPARGNE - CONVENTION DE SOUS-DISTRIBUTION SCPI/LIFE (FR),CORUM L'Epargne - Convention de sous-distribution (LIFE/SCPI) (FR),CORUM L'Épargne - Sub-distribution agreement (UFE) (FR)
+C074,Corum lEpargne - Sub Distribution Agreement,CORUM L'Epargne - Convention de sous-distribution (LIFE/SCPI) (FR),CORUM L'Épargne - Sub-distribution agreement (LIFE/REIT) (FR)
+C075,CORUM QEERI UNIQUE B2B,CORUM L'Epargne - QEERI unique (B2B),CORUM L'Épargne - Unique QEERI (B2B)
+C076,CORUM QEERI UNIQUE B2C,CORUM L'Epargne - QEERI unique (B2C),CORUM L'Épargne - Unique QEERI (B2C)
+C077,ID TIERS PAYEUR,ID tiers payeur,Third-party payer ID
+C078,Dispense PFNL,Dispense PFNL,PFNL Exemption
+C079,Dispense PFNL USA,Dispense PFNL (USA),PFNL Exemption (USA)
+C101,CORUM - Bulletin de souscription,CORUM AM - Bulletin de souscription,CORUM AM - Subscription form
+C102,CORUM - Adhésion au réinvestissement des dividendes,CORUM AM - Adhésion au réinvestissement des dividendes,CORUM AM - Dividend reinvestment agreement
+C103,CORUM - Adhésion au plan épargne immobilier,CORUM AM - Adhésion au plan épargne immobilier,CORUM AM - Real estate savings plan agreement
+C104,CORUM - Convention de démembrement viager de parts de CORUM,CORUM AM - Convention de démembrement viager de parts,CORUM AM - Agreement for life estate unbundling of units
+C105,CORUM - Souscription démenbrée temporaire-mandat de recherche,CORUM AM - Convention de démembrement viager de parts,CORUM AM - Agreement for temporary unbundling of units
+C107,CORUM - Bulletin de souscription,CORUM AM - Bulletin de souscription,CORUM AM - Subscription form
+C108,CORUM - Adhésion au réinvestissement des dividendes,CORUM AM - Adhésion au réinvestissement des dividendes,CORUM AM - Dividend reinvestment agreement
+C109,CORUM - Adhésion au plan épargne immobilier,CORUM AM - Adhésion au plan épargne immobilier,CORUM AM - Real estate savings plan agreement
+C110,CORUM ORIGIN - AUSTRIA - TAX DOCUMENT,CORUM Origin - Austria - Document fiscal,CORUM Origin - Austria - Tax document
+C201,CORUM XL - Bulletin de souscription,CORUM XL - Bulletin de souscription,CORUM XL - Subscription form
+C202,CORUM XL - Adhésion au réinvestissement des dividendes,CORUM XL - Adhésion au réinvestissement des dividendes,CORUM XL - Dividend reinvestment agreement
+C203,CORUM XL - Adhésion au plan épargne immobilier,CORUM XL - Adhésion au plan épargne immobilier,CORUM XL - Real estate savings plan agreement
+C204,CORUM XL - Convention de démembrement viager de parts,CORUM XL - Convention de démembrement viager de parts,CORUM XL - Agreement for life estate unbundling of units
+C205,CORUM XL - Souscription démenbrée temporaire-mandat de recherche,CORUM XL - Souscription démenbrée temporaire (mandat de recherche),CORUM XL - Agreement for temporary unbundling (search mandate)
+C206,CORUM XL - Bulletin de souscription,CORUM XL - Bulletin de souscription,CORUM XL - Subscription form
+C207,CORUM XL - Bulletin de souscription,CORUM XL - Bulletin de souscription,CORUM XL - Subscription form
+C208,CORUM XL - Adhésion au réinvestissement des dividendes,CORUM XL - Adhésion au réinvestissement des dividendes,CORUM XL - Dividend reinvestment agreement
+C209,CORUM XL - Adhésion au plan épargne immobilier,CORUM XL - Adhésion au plan épargne immobilier,CORUM XL - Real estate savings plan agreement
+C210,CORUM - Accusé de réception de souscription,CORUM L'Epargne - Accusé de réception de souscription,CORUM l'Épargne - Acknowledgement of subscription receipt
+C310, CORUM AM - Formulaire de transfert de part(s),CORUM AM - Formulaire de transfert de part(s),CORUM AM - Unit transfer form(s)
+C311,CORUM AM - Formulaire de retrait de part(s),CORUM AM - Formulaire de transfert de part(s),CORUM AM - Unit transfer form(s)
+C312,AM - Questionnaire d entrée en relation investisseurs,CORUM AM - QEERI,CORUM AM - QEERI
+C313,QEERI - QUESTIONNAIRE ENTREE EN RELATION,CORUM AM - QEERI,CORUM AM - QEERI
+C314,QEERI - QUESTIONNAIRE ENTREE EN RELATION,CORUM AM - QEERI,CORUM AM - QEERI
+C401,ECO - Bulletin de souscription,CORUM ECO - Bulletin de souscription,CORUM ECO - Subscription form
+C402,ECO - Retraits de part,CORUM ECO - Retrait de part(s),CORUM ECO - Share withdrawal
+C403,CORUM ORIGIN - Bulletin de souscription,CORUM Origin - Bulletin de souscription,CORUM Origin - Subscription form
+C404,CORUM XL - Bulletin de souscription,CORUM XL - Bulletin de souscription,CORUM XL - Subscription form
+C405,CORUM EURION - Bulletin de souscription,CORUM Eurion - Bulletin de souscription,CORUM Eurion - Subscription form
+C501,AM - Formulaire de changement d adresse,CORUM AM - Formulaire de changement d'adresse,CORUM l'Épargne - Address change form
+C502,EPARGNE - Formulaire de changement de coordonnees bancaires,CORUM L'Epargne - Formulaire de changement de coordonnées bancaires,CORUM l'Épargne - Bank details change form
+C539,CHEQUE ABSENT,Chèque absent,Cheque not included
+C601,CORUM LIFE - BS,CORUM Life - Bulletin de souscription,CORUM Life - Subscription form
+C602,CORUM LIFE - QEE,CORUM Life - QEERI,CORUM Life - QEERI
+C603,CORUM LIFE - Bulletin de souscription,CORUM Life - Bulletin de souscription,CORUM Life - Subscription form
+C604,CORUM LIFE,CORUM Life - Bulletin de souscription,CORUM Life - Subscription form
+C610,Certificat de souscription,CORUM Life - Certificat de souscription,CORUM Life - Subscription mandate
+C613,CORUM LIFE - QUESTIONNAIRE,CORUM Life - QEERI,CORUM Life - QEERI
+C614,CORUM LIFE - BS,CORUM Life - Bulletin de souscription,CORUM Life - Subscription form
+C615,QEE LIFE FOR US,CORUM Life for Us - QEERI,CORUM Life for Us - QEERI
+C616,BS CORUM LIFE FOR US,CORUM Life for Us - Bulletin de souscription,CORUM Life - Subscription form
+C617,CORUM LIFE - Bulletin versement complémentaire,CORUM Life - Bulletin de versement complémentaire,CORUM Life - Additional payment form
+C618,CORUM LIFE - Bulletin Rachat,CORUM Life - Bulletin de rachat,CORUM Life - Redemption form
+C619,CORUM LIFE - Clause démembrée souscription simple,CORUM Life - Clause démembrée souscription simple,CORUM Life - Bare ownership simple subscription clause
+C620,CORUM LIFE - Clause démembrée co-souscription,CORUM Life - Clause démembrée co-souscription,CORUM Life -  Bare ownership Co-subscription request
+C621,CORUM LIFE - Bulletin demande de modification ou arrêt de versement programmé,CORUM Life - Bulletin demande de modification ou arrêt de versement programmé,CORUM Life - Request form for modification or termination of scheduled payments
+C622,CORUM LIFE - Bulletin de demande de prestation décès,CORUM Life - Bulletin demande de prestation décès,CORUM Life - Death benefit claim form
+C623,CORUM LIFE - Bulletin darbitrage,CORUM Life - Bulletin d'arbitrage,CORUM Life - Arbitration form
+C624,CORUM LIFE - Bulletin de modification de coordonnées bancaires,CORUM Life - Bulletin de modification de coordonnées bancaires,CORUM Life - Bank details modification form
+C625,CORUM LIFE - Bulletin de modification de clause bénéficiaires,CORUM Life - Bulletin de modification de clause bénéficiaires,CORUM Life - Beneficiary clause modification form
+C626,CORUM LIFE - Bulletin de changement dadresse,CORUM Life - Bulletin de changement d'adresse,CORUM Life - Address change form
+C627,CORUM LIFE - Bulletin de demande davance,CORUM Life - Bulletin de demande d'avance,CORUM Life - Advance payment request form
+C628,DEMANDE DE RENONCIATION (papier libre),Papier libre client,Client mail
+C629,MAIL CLIENT/CONFORMITE RENONCIATION,Mail client,Client mail
+C630,MAIL CLIENT/CONFORMITE VERSEMENT LIBRE,Mail client,Client's own letter
+C631,MAIL CLIENT/CONFORMITE VPR,Mail client,Client mail
+C632,DEMANDE D ARRET D UN VERSEMENT PROGRAMME (papier libre),Papier libre client,Client's own letter
+C633,DEMANDE DE REMBOURSEMENT D ASSURANCE VIE PAR LE NOTAIRE,Demande de règlement assurance vie émis par le notaire,Life insurance settlement request issued by the notary
+C634,MAIL CLIENT/CONFORMITE SINISTRE,Mail client,Client mail
+C635,DEMANDE DE RACHAT PARTIEL (papier libre),Papier libre client,Client's own letter
+C636,MAIL CLIENT/CONFORMITE RACHAT PARTIEL,Mail client,Client mail
+C637,MAIL CLIENT/CONFORMITE RACHAT TOTAL,Mail client,Client mail
+C638,DEMANDE DE RACHAT TOTAL (papier libre),Papier libre client,Client's own letter
+C639,DEMANDE DE MODIFICATION DE LA REPARTITION (papier libre),Papier libre client,Client's own letter
+C640,DEMANDE DE MODIFICATION DE COORDONNEES BANCAIRES (papier libre),Papier libre client,Client's own letter
+C641,MAIL CLIENT/CONFORMITE MODIFICATION COORDONNEES BANCAIRES,Mail client,Client mail
+C642,DEMANDE DE MODIFICATION DE CLAUSE BENEFICIAIRES (papier libre),Papier libre client,Client's own letter
+C643,MAIL CLIENT/CONFORMITE MODIFICATION CLAUSE BENEFICIAIRES,Mail client,Client mail
+C644,DEMANDE DE CHANGEMENT D ADRESSE (papier libre),Papier libre client,Client's own letter
+C645,MAIL CLIENT/CONFORMITE MODIFICATION COORDONNEES,Mail client,Client mail
+C646,MAIL CLIENT/CONFORMITE DEMANDE D AVANCE,Mail client,Client mail
+C647,CORUM Life Bonds - QEE,CORUM Life Bonds - QEERI,CORUM Life Bonds - QEERI
+C648,CORUM Life Bonds - Bulletin de souscription,CORUM Life Bonds - Bulletin de souscription,CORUM Life Bonds - Subscription form
+C649,CORUM Life Bonds - Déclaration dadéquation,CORUM Life Bonds - Déclaration d'adéquation,CORUM Life Bonds - Appropriateness declaration
+C650,CORUM LIFE - BS,CORUM Life - Bulletin de souscription,CORUM Life - Subscription form
+C651,CORUM LIFE - QUESTIONNAIRE B2C,CORUM Life - QEERI (B2C),CORUM Life - QEERI (B2C)
+C652,CORUM LIFE - QUESTIONNAIRE B2B,CORUM Life - QEERI (B2B),CORUM Life - QEERI (B2B)
+C653,KYC CAPI PM B2B,CORUM CAPI - QEERI PM (B2B),CORUM CAPI - QEERI Legal Entity (B2B)
+C654,BS CAPI PM,CORUM CAPI - Bulletin de souscription (PM),CORUM CAPI - Subscription form (Legal Entity) 
+C655,KYC CAPI PM B2C,CORUM CAPI - QEERI PM (B2C),CORUM CAPI - QEERI Legal Entity (B2C)
+C656,CORUM LIFE - BULLETIN DE MODIFICATION DINFORMATIONS,CORUM Life - Bulletin de modification d'informations,CORUM Life - Information modification form
+C657,CORUM LIFE - QEERI CAPI PP B2C,CORUM CAPI - QEERI PP (B2C),CORUM CAPI - QEERI Individual (B2C)
+C658,CORUM LIFE - BULLETIN DE SOUSCRIPTION CAPI PP,CORUM CAPI - Bulletin de souscription (PP),CORUM CAPI - Subscription form (Individual)
+C659,CORUM LIFE - QEERI CAPI PP B2B,CORUM CAPI - QEERI PP (B2B),CORUM CAPI - QEERI Individual (B2B)
+C660,CORUM LIFE - QEERI PER B2C,CORUM PER - QEERI (B2C),CORUM PER - QEERI (B2C)
+C661,CORUM LIFE - BULLETIN DE SOUSCRIPTION PER,CORUM PER - Bulletin de souscription,CORUM PER - Subscription form
+C662,CORUM LIFE - QEERI PER B2B,CORUM PER - QEERI (B2B),CORUM PER - QEERI (B2B)
+C663,CORUM LIFE - BULLETIN DE TRANSFERT ENTRANT PER (CLIENT),CORUM Life - Bulletin de transfert entrant PER (Client),CORUM Life - Inbound transfer form PER (Client)
+C664,CORUM LIFE - BULLETIN DE TRANSFERT ENTRANT PER (COMPAGNIE),CORUM Life - Bulletin de transfert entrant PER (Compagnie),CORUM Life - Inbound transfer form PER (Company)
+C665,CORUM PER - Bulletin versement complémentaire,CORUM PER - Bulletin de versement complémentaire,CORUM PER - Additional payment form
+C666,Corum Life - Bulletin de rachat Life,CORUM Life - Bulletin de rachat,CORUM Life - Redemption form
+C667,Corum Life - Bulletin darbitrage Life,CORUM Life - Bulletin d'arbitrage,CORUM Life - Arbitration form
+C668,Corum Life - Bulletin davance Life,CORUM Life - Bulletin de demande d'avance,CORUM Life - Advance payment request form
+C669,Corum Life - Modification de clause bénéficiaire Life,CORUM Life - Bulletin de modification de clause bénéficiaires,CORUM Life - Beneficiary clause modification form
+C670,Life - Déclaration dadéquation,CORUM Life - Déclaration d'adéquation,CORUM Life - Appropriateness declaration
+C701,EURION - Bulletin de souscription,CORUM Eurion - Bulletin de souscription,CORUM Eurion - Subscription form
+C702,CORUM EURION - Adhésion au réinvestissement des dividendes,CORUM Eurion - Adhésion au réinvestissement des dividendes,CORUM Eurion - Dividend reinvestment agreement
+C703,EURION - Adhésion au plan épargne immobilier,CORUM Eurion - Adhésion au plan épargne immobilier,CORUM Eurion - Real estate savings plan agreement
+C704,EURION - Convention de démembrement viager de parts,CORUM Eurion - Convention de démembrement viager de parts,CORUM Eurion - Agreement for life estate unbundling of units
+C705,EURION - Souscription démenbrée temporaire-mandat rech.,CORUM Eurion - Souscription démembrée temporaire (mandat de recherche),CORUM Eurion - Temporary unbundling subscription (search mandate)
+C707,EURION - Bulletin de souscription,CORUM Eurion - Bulletin de souscription,CORUM Eurion - Subscription form
+C708,EURION - Adhésion au réinvestissement des dividendes,CORUM Eurion - Adhésion au réinvestissement des dividendes,CORUM Eurion - Dividend reinvestment agreement
+C709,EURION - Adhésion au plan épargne immobilier,CORUM Eurion - Adhésion au plan épargne immobilier,CORUM Eurion - Real estate savings plan agreement
+C800,FINANCEMENT - CONTRAT SIGNE ELECTRONIQUEMENT,Document lié au financement par Corum,Document related to financing by Corum
+C801,FINANCEMENT - CONTRAT DE PRET,Document lié au financement par Corum,Document related to financing by Corum
+C802,FINANCEMENT - CERTIFICAT SIGNATURE ELECTRONIQUE,Document lié au financement par Corum,Document related to financing by Corum
+C803,FINANCEMENT - RELEVE DE SITUATION,Document lié au financement par Corum,Document related to financing by Corum
+C804,FINANCEMENT - ECHEANCIER DE PRET,Document lié au financement par Corum,Document related to financing by Corum
+C805,FINANCEMENT - SIMULATION DE FINANCEMENT,Document lié au financement par Corum,Document related to financing by Corum
+C806,FINANCEMENT - ACTIVATION DU NANTISSEMENT,Document lié au financement par Corum,Document related to financing by Corum
+C807,FINANCEMENT - DEMANDE NOVATION,Document lié au financement par Corum,Document related to financing by Corum
+C808,FINANCEMENT - DEMANDE SUSPENSION MENSUALITE,Document lié au financement par Corum,Document related to financing by Corum
+C809,FINANCEMENT - DEMANDE MODULATION ECHEANCES,Document lié au financement par Corum,Document related to financing by Corum
+C810,FINANCEMENT - DEMANDE MODIFICATION DATE ECHEANCE,Document lié au financement par Corum,Document related to financing by Corum
+C811,FINANCEMENT - DEMANDE MODIFICATION MATURITE,Document lié au financement par Corum,Document related to financing by Corum
+C812,FINANCEMENT - DEMANDE REMBOURSEMENT ANTICIPE PARTIEL,Document lié au financement par Corum,Document related to financing by Corum
+C813,FINANCEMENT - DEMANDE REMBOURSEMENT ANTICIPE TOTAL,Document lié au financement par Corum,Document related to financing by Corum
+C814,FINANCEMENT - INFORMATION CLOTURE CONTRAT,Document lié au financement par Corum,Document related to financing by Corum
+C815,FINANCEMENT - CONTRAT DE TRAVAIL,Document lié au financement par Corum,Document related to financing by Corum
+C816,FINANCEMENT - JUSTIFICATIF D ALLOCATIONS,Document lié au financement par Corum,Document related to financing by Corum
+C817,FINANCEMENT - JUSTIFICATIF ORIGINE DES FONDS - BILAN,Document lié au financement par Corum,Document related to financing by Corum
+C818,FINANCEMENT - JUSTIFICATIF ORIGINE DES FONDS - COMPTE DE RESULTA,Document lié au financement par Corum,Document related to financing by Corum
+C901,CORUM US - FATCA PP,CORUM USA - FATCA (PP),CORUM USA - FATCA (Individual)
+C902,CORUM US - FATCA PM,CORUM USA - FATCA (PM),CORUM USA - FATCA (Legal Entity)
+C904,SCPI US - Mandat de démembrement viager,CORUM USA - Mandat de démembrement viager,CORUM USA - Life estate unbundling mandate
+C905,SCPI US - Mandat de démembrement temporaire,CORUM USA - Mandat de démembrement temporaire,CORUM USA - Temporary unbundling mandate
+C906,CORUM US - Bulletin de souscription B2B,CORUM USA - Bulletin de souscription (B2B),CORUM USA - Subscription form (B2B)
+C907,CORUM US - Bulletin de souscription B2C,CORUM USA - Bulletin de souscription (B2C),CORUM USA - Subscription form (B2C)
+C908,CORUM US - Mandat RD,CORUM USA - Mandat réinvestissement des dividendes,CORUM USA - Dividend reinvestment mandate
+C909,CORUM US - Mandat PEI,CORUM USA - Mandat plan épargne immobilier,CORUM USA - Real estate savings plan mandate
+C910,CORUM Origin - Mandat RD,CORUM Origin - Mandat réinvestissement des dividendes,CORUM Origin - Dividend Reinvestment Mandate
+C911,CORUM XL -  Mandat RD,CORUM XL -  Mandat réinvestissement des dividendes,CORUM XL -  Dividend Reinvestment Mandate
+C912,CORUM Eurion -  Mandat RD,CORUM Eurion -  Mandat RD,CORUM Eurion -  Dividend Reinvestment Mandate
+C913,CORUM USA -  Mandat RD,CORUM USA -  Mandat RD,CORUM USA -  Dividend Reinvestment Mandate
+C950,Infinity - Bulletin de souscription,Infinity - Bulletin de souscription,Infinity - Subscription Form
+C951,Infinity - Bulletin de versement complémentaire,Infinity - Bulletin de versement complémentaire,Infinity - Additional Payment Form
+C952,Infinity - Bulletin d'arbitrage,Infinity - Bulletin d'arbitrage,Infinity - Arbitration form
+C953,Infinity - Modification informations client,Infinity - Modification informations client,Infinity - Client information modification form
+NPAI,NPAI-PND,NPAI-PND,Undeliverable as Addressed - Moved; Left No Forwarding Address
+C677,CORUM LIFE - Bulletin de souscription,CORUM LIFE - Bulletin de souscription,CORUM LIFE - Subscription form
+C678,CORUM LIFE - Bulletin versement complémentaire,CORUM LIFE - Bulletin versement complémentaire,CORUM LIFE - Additional payment form
+C679,CORUM PER - Bulletin de souscription,CORUM PER - Bulletin de souscription,CORUM PER - Subscription form
+C680,CORUM PER - Bulletin versement complémentaire,CORUM PER - Bulletin versement complémentaire,CORUM PER - Additional payment form
+C681,CORUM CAPI - Bulletin de souscription PM,CORUM CAPI - Bulletin de souscription PM,CORUM CAPI - Subscription form MP
+C081,CORUM QEERI UNIQUE B2C,CORUM QEERI UNIQUE B2C,CORUM QEERI UNIQUE B2C
+20,Contenu correspondance emails,Corps de mail,Mail content
+C954,Infinity customer advisory report,Infinity - Customer Advisory report,Rapport consultatif client
+C955,Infinity customer operation report,Infinity - Customer Operation report,Rapport opérationnel client
+C925,Bulletin de souscription B2B pour Corum Start,CORUM START- Bulletin de souscription B2B,CORUM START - Subscription form B2B
+C926,Formulaire de plan epargne immobilier pour Corum Start,CORUM START - Mandat PEI,CORUM START - Programmed savings mandate
+C927,Formulaire de reinvestissement de dividendes pour Corum Start,CORUM START - Mandat RD,CORUM START - DR Mandate
