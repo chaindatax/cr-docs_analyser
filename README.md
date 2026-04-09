@@ -92,6 +92,10 @@ AZURE_ENABLED=true
 
 # Optional — Azure Blob Storage dataset source (see "Dataset source" below)
 BLOB_SAS_URL=https://<account>.blob.core.windows.net/<container>?<sas-token>
+
+# Optional — PDF conversion settings (used by preprocess_pdfs.py)
+PDF_DPI=150
+PDF_KEEP_ORIGINALS=false
 ```
 
 ### Azure prerequisites
@@ -101,17 +105,67 @@ Both Azure analysers require models deployed in your Azure AI Foundry resource:
 - `gpt-4.1` — field extraction (Content Understanding) and vision classification (Azure OpenAI)
 - `text-embedding-3-large` — semantic document chunking (Content Understanding only)
 
+## Workflow complet
+
+Below is the typical sequence of operations when starting from scratch or adding new files to the dataset.
+
+**1. Place files in the dataset**
+
+```
+dataset/
+├── id_cards/
+├── passports/
+├── jdd/
+├── false_id/
+└── false_doc/
+```
+
+Supported formats: `.jpg`, `.jpeg`, `.png`, `.pdf`.
+
+**2. (Optional) Rename files to the standard naming convention**
+
+```bash
+uv run rename_dataset.py --dry   # preview changes
+uv run rename_dataset.py         # apply renaming
+```
+
+This also updates `dataset_labels.csv` and `results.csv` if they exist.
+See [Filename format](#filename-format) for the naming convention.
+
+**3. Convert PDFs to images**
+
+The AI analysers work on images. Run this before `main.py` if the dataset contains PDFs:
+
+```bash
+uv run preprocess_pdfs.py
+```
+
+This converts each PDF page to a numbered JPG (`_p001.jpg`, `_p002.jpg`, …) and removes the original PDF.
+
+**4. Run the analysis**
+
+```bash
+uv run main.py
+```
+
+Output is written to `results.csv` in the project root.
+
+**5. (Optional) Label results for evaluation**
+
+Edit `dataset_labels.csv` with the ground truth `is_doc_id`, `id_doc_type`, and `doc_type` values, then compare with the predictions in `results.csv`.
+
 ## Usage
 
 ```bash
 uv run main.py                          # all analysers, local dataset/
 MISTRAL_ENABLED=false uv run main.py    # Azure only (no Mistral API key needed)
 AZURE_ENABLED=false uv run main.py      # Mistral only (no Azure keys needed)
-uv run pytest tests/                    # run unit tests
-uv run pytest tests/test_dataset.py -v  # run integration tests against real APIs
+uv run pytest tests/                    # run all tests
+uv run pytest tests/test_mocks.py -v    # unit tests only (no credentials needed)
+uv run pytest tests/test_main.py -v     # integration tests against real APIs
 ```
 
-The output `results.csv` is written to the project root.
+The output `results.csv` is written to the project root with `;` as the delimiter.
 
 ### Dataset source
 
@@ -181,7 +235,7 @@ The container is expected to mirror the local folder structure (blobs named `id_
 The AI vision analysers work on images. PDFs must be converted to JPG (one image per page) before running `main.py`. The `preprocess_pdfs.py` script handles this for both local and blob sources.
 
 ```bash
-uv run preprocess_pdfs.py                        # local dataset/
+uv run preprocess_pdfs.py                              # local dataset/
 BLOB_SAS_URL="https://..." uv run preprocess_pdfs.py   # Azure Blob Storage
 ```
 
@@ -195,7 +249,7 @@ BLOB_SAS_URL="https://..." uv run preprocess_pdfs.py   # Azure Blob Storage
 
 | Variable | Default | Description |
 |---|---|---|
-| `PDF_DPI` | `150` | Render resolution — increase for better quality |
+| `PDF_DPI` | `150` | Render resolution — increase for better quality, larger files |
 | `PDF_KEEP_ORIGINALS` | `false` | Keep the source PDF after conversion |
 
 > **Azure SAS permissions:** the blob source requires **Read + List + Write + Delete** permissions to download PDFs, upload JPGs, and remove the originals.
@@ -204,16 +258,21 @@ BLOB_SAS_URL="https://..." uv run preprocess_pdfs.py   # Azure Blob Storage
 
 ```
 docs_analyser/
-├── base.py                    # Analyser ABC + AnalysisResult dataclass + is_url()
+├── base.py                    # Analyser ABC + AnalysisResult dataclass + helpers
 ├── blob_source.py             # BlobSource — lists blobs and builds per-blob SAS URLs
 ├── mistral_analyser.py        # MistralAnalyser       — Mistral OCR API
 ├── mistral_vision_analyser.py # MistralVisionAnalyser — Pixtral vision model
 ├── azure_analyser.py          # AzureAnalyser         — Azure Content Understanding
 └── azure_vision_analyser.py   # AzureVisionAnalyser   — Azure OpenAI vision model
 main.py                        # async batch runner, writes results.csv
+preprocess_pdfs.py             # PDF → JPG conversion (local and blob)
+rename_dataset.py              # renames dataset files to the standard convention
 tests/
-├── test_main.py               # unit tests (mocked)
-└── test_dataset.py            # integration tests (real API calls, skipped if keys absent)
+├── test_dataset.py            # shared dataset helpers (first_file_per_leaf_subdir)
+├── test_file_access.py        # unit tests for test_dataset helpers
+├── test_mocks.py              # unit tests for all analysers (fully mocked, no credentials)
+├── test_main.py               # integration tests against real APIs (skipped if keys absent)
+└── test_preprocess_pdfs.py    # unit tests for preprocess_pdfs (no credentials needed)
 ```
 
 ### Base classes (`base.py`)
@@ -224,31 +283,33 @@ tests/
 def runner(self, source: str) -> AnalysisResult
 ```
 
-`source` is either a local file path or an HTTPS URL. The `is_url(source)` helper (also exported from `base.py`) is used internally by each analyser to switch between the two code paths.
+`source` is either a local file path or an HTTPS URL. The `is_url(source)` and `read_source_bytes(source)` helpers (also exported from `base.py`) are used internally by each analyser to switch between the two code paths.
 
 `AnalysisResult` is a dataclass with three fields:
 
 | Field | Type | Description |
 |---|---|---|
-| `id_doc` | `bool` | Whether the document is an identity document |
-| `document_id_type` | `str` | `"id card"`, `"passport"`, `"proof_of_residency"`, or `"not_identity_doc"` |
-| `document_type` | `str` | Free-form document type as described by the model |
+| `is_doc_id` | `bool` | Whether the document is an identity document |
+| `id_doc_type` | `str` | `"id card"`, `"passport"`, `"proof_of_residency"`, or `"not_identity_doc"` |
+| `doc_type` | `str` | Free-form document type as described by the model |
+
+`FIELD_DEFINITIONS` is a shared dict that maps these three field names to their JSON schema definitions (type + description). It is passed verbatim to each AI API as the structured output schema, ensuring all four analysers extract the same fields with the same semantics.
 
 ### MistralAnalyser
 
-Encodes the image as base64 and calls the `mistral-ocr-latest` model with a structured JSON schema to extract all three fields from the document text content.
+Encodes the document as base64 and calls the `mistral-ocr-latest` model with `FIELD_DEFINITIONS` as a structured JSON schema. Supports both images and PDFs (sent as `image_url` and `document_url` respectively).
 
 ### MistralVisionAnalyser
 
-Sends the image to `pixtral-12b-2409` via the chat completion API with a prompt requesting JSON output. Classifies the document visually without relying on OCR text extraction — works even when text is blurry or partially obscured.
+Sends the image to `pixtral-12b-2409` via the chat completion API with a prompt requesting JSON output matching `FIELD_DEFINITIONS`. Classifies the document visually without relying on OCR text extraction — works even when text is blurry or partially obscured. PDFs are not supported by this analyser (convert first with `preprocess_pdfs.py`).
 
 ### AzureAnalyser
 
-Uses Azure Content Understanding with a custom analyzer (`identityDocClassifier`) built on top of `prebuilt-document`. The analyzer is created automatically on first run and reused on subsequent calls. Uses `gpt-4.1` for field extraction and `text-embedding-3-large` for document chunking.
+Uses Azure Content Understanding with a custom analyzer (`identityDocClassifier`) built on top of `prebuilt-document`. The analyzer is created automatically on first instantiation and reused on subsequent calls — if the field schema changes, it is recreated automatically. Uses `gpt-4.1` for field extraction and `text-embedding-3-large` for document chunking.
 
 ### AzureVisionAnalyser
 
-Sends the image to `gpt-4.1` (vision-capable) via Azure OpenAI chat completions with a prompt requesting JSON output. Like the Mistral vision analyser, classifies the document visually without OCR.
+Sends the image to `gpt-4.1` (vision-capable) via Azure OpenAI chat completions with a prompt requesting JSON output matching `FIELD_DEFINITIONS`. Like the Mistral vision analyser, classifies the document visually without OCR. Local files are base64-encoded; remote URLs are passed directly.
 
 ### BlobSource (`blob_source.py`)
 
@@ -256,28 +317,33 @@ Takes a container-level SAS URL and uses `ContainerClient.from_container_url` (a
 
 ### Batch runner (`main.py`)
 
-Selects the source (local directory or blob container) based on `BLOB_SAS_URL`, then processes files in batches of 10 using `asyncio`:
+Selects the source (local directory or blob container) based on `BLOB_SAS_URL`, then processes files in batches of `BATCH_SIZE` (default: 10) using `asyncio`:
 
 - Each batch runs files concurrently via `asyncio.gather`
 - Within each file, all four analyser calls run in parallel via `asyncio.gather` + `asyncio.to_thread`
+- If an analyser raises an exception on a given file, the error is printed and its CSV columns are left empty — other analysers still run and the file is not skipped entirely
 - Results are written to `results.csv` preserving the original file order
 
 ### Output CSV
 
+The output file uses `;` as a delimiter (to avoid conflicts with commas in free-form `doc_type` values).
+
 | Column | Description |
 |---|---|
-| `file_path` | Relative path to the image |
+| `file_path` | Relative path to the parent directory of the image |
 | `filename` | Image filename |
-| `mistral_id_doc` | `id_doc` from Mistral OCR |
-| `mistral_document_id_type` | `document_id_type` from Mistral OCR |
-| `mistral_document_type` | `document_type` from Mistral OCR |
-| `azure_id_doc` | `id_doc` from Azure Content Understanding |
-| `azure_document_id_type` | `document_id_type` from Azure Content Understanding |
-| `azure_document_type` | `document_type` from Azure Content Understanding |
-| `mistral_vision_id_doc` | `id_doc` from Mistral Vision |
-| `mistral_vision_document_id_type` | `document_id_type` from Mistral Vision |
-| `mistral_vision_document_type` | `document_type` from Mistral Vision |
-| `azure_vision_id_doc` | `id_doc` from Azure OpenAI Vision |
-| `azure_vision_document_id_type` | `document_id_type` from Azure OpenAI Vision |
-| `azure_vision_document_type` | `document_type` from Azure OpenAI Vision |
-| `aligned` | `True` if all four analysers agree on all three fields |
+| `mistral_is_doc_id` | `is_doc_id` from Mistral OCR |
+| `mistral_id_doc_type` | `id_doc_type` from Mistral OCR |
+| `mistral_doc_type` | `doc_type` from Mistral OCR |
+| `azure_is_doc_id` | `is_doc_id` from Azure Content Understanding |
+| `azure_id_doc_type` | `id_doc_type` from Azure Content Understanding |
+| `azure_doc_type` | `doc_type` from Azure Content Understanding |
+| `mistral_vision_is_doc_id` | `is_doc_id` from Mistral Vision |
+| `mistral_vision_id_doc_type` | `id_doc_type` from Mistral Vision |
+| `mistral_vision_doc_type` | `doc_type` from Mistral Vision |
+| `azure_vision_is_doc_id` | `is_doc_id` from Azure OpenAI Vision |
+| `azure_vision_id_doc_type` | `id_doc_type` from Azure OpenAI Vision |
+| `azure_vision_doc_type` | `doc_type` from Azure OpenAI Vision |
+| `aligned` | `True` if all **enabled** analysers returned a result and agree on all three fields |
+
+> **Note on `aligned`:** when one provider is disabled (e.g. `MISTRAL_ENABLED=false`), only the active analysers are considered. A file is `aligned=True` if all active analysers agree — disabled ones are ignored. If any active analyser failed with an error, `aligned` is `False`.
