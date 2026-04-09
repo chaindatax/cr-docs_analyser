@@ -130,6 +130,38 @@ dataset/
 └── false_doc/
 ```
 
+### Filename format
+
+Files are named with embedded metadata following this convention:
+
+```
+<IdContact>_<IdCourier>_<CodeTypologie>_<NomFichierXelians>.<extension>
+```
+
+| Segment | Description | Format |
+|---|---|---|
+| `IdContact` | Unique contact identifier | UUID v4 |
+| `IdCourier` | Courier reference | `RE` + 10 digits |
+| `CodeTypologie` | Document type code, fixed per subfolder | `C0xx` |
+| `NomFichierXelians` | Original filename from the GED | any |
+
+Example:
+```
+588fb341-5472-e511-bd98-006073b34fd5_RE0000096194_C031_CRM.corumdocumentserviceprd02.gedw0103.20230309161309.webservice.20288.S2F.0001.pdf
+```
+
+Subfolder → `CodeTypologie` mapping used in this dataset:
+
+| Subfolder | CodeTypologie |
+|---|---|
+| `id_cards` | `C031` |
+| `passports` | `C032` |
+| `jdd` | `C033` |
+| `false_doc` | `C034` |
+| `false_id` | `C035` |
+
+The `rename_dataset.py` script at the project root generates this naming automatically for local files.
+
 **Azure Blob Storage**
 
 Set `BLOB_SAS_URL` to a container-level SAS URL. Files are **not downloaded** — their SAS URLs are passed directly to each AI API, which fetches the content itself.
