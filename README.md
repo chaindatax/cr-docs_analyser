@@ -85,6 +85,13 @@ CONTENTUNDERSTANDING_KEY=your_azure_key
 
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
 AZURE_OPENAI_KEY=your_azure_openai_key
+
+# Optional — disable one provider entirely (default: both enabled)
+MISTRAL_ENABLED=true
+AZURE_ENABLED=true
+
+# Optional — Azure Blob Storage dataset source (see "Dataset source" below)
+BLOB_SAS_URL=https://<account>.blob.core.windows.net/<container>?<sas-token>
 ```
 
 ### Azure prerequisites
@@ -97,18 +104,52 @@ Both Azure analysers require models deployed in your Azure AI Foundry resource:
 ## Usage
 
 ```bash
-uv run main.py        # analyse all files in dataset/ and write results.csv
-uv run pytest tests/  # run unit tests
+uv run main.py                          # all analysers, local dataset/
+MISTRAL_ENABLED=false uv run main.py    # Azure only (no Mistral API key needed)
+AZURE_ENABLED=false uv run main.py      # Mistral only (no Azure keys needed)
+uv run pytest tests/                    # run unit tests
 uv run pytest tests/test_dataset.py -v  # run integration tests against real APIs
 ```
 
-Place images (`.jpg` or `.png`) in `dataset/` before running. The output `results.csv` is written to the project root.
+The output `results.csv` is written to the project root.
+
+### Dataset source
+
+The runner supports two mutually exclusive sources, selected via the `BLOB_SAS_URL` environment variable.
+
+**Local directory (default)**
+
+Place images (`.jpg`, `.jpeg`, `.png`) and PDFs in `dataset/` before running:
+
+```
+dataset/
+├── id_cards/
+├── passports/
+├── jdd/
+├── false_id/
+└── false_doc/
+```
+
+**Azure Blob Storage**
+
+Set `BLOB_SAS_URL` to a container-level SAS URL. Files are **not downloaded** — their SAS URLs are passed directly to each AI API, which fetches the content itself.
+
+```bash
+BLOB_SAS_URL="https://<account>.blob.core.windows.net/<container>?sv=..." uv run main.py
+```
+
+The container is expected to mirror the local folder structure (blobs named `id_cards/<filename>`, etc.). The `file_path` column in `results.csv` is derived from the blob's virtual folder prefix.
+
+> **Required SAS permissions:** the token must grant **Read** (`r`) and **List** (`l`) on the container. A read-only blob SAS is not sufficient — listing requires a container-scoped SAS with at minimum `rl` permissions.
+>
+> In the Azure Portal: *Storage account → Shared access signature → Allowed permissions → check Read + List → Resource type = Container + Object*.
 
 ## Architecture
 
 ```
 docs_analyser/
-├── base.py                    # Analyser ABC + AnalysisResult dataclass
+├── base.py                    # Analyser ABC + AnalysisResult dataclass + is_url()
+├── blob_source.py             # BlobSource — lists blobs and builds per-blob SAS URLs
 ├── mistral_analyser.py        # MistralAnalyser       — Mistral OCR API
 ├── mistral_vision_analyser.py # MistralVisionAnalyser — Pixtral vision model
 ├── azure_analyser.py          # AzureAnalyser         — Azure Content Understanding
@@ -124,8 +165,10 @@ tests/
 `Analyser` is an abstract base class with a single method:
 
 ```python
-def runner(self, file_path: str) -> AnalysisResult
+def runner(self, source: str) -> AnalysisResult
 ```
+
+`source` is either a local file path or an HTTPS URL. The `is_url(source)` helper (also exported from `base.py`) is used internally by each analyser to switch between the two code paths.
 
 `AnalysisResult` is a dataclass with three fields:
 
@@ -151,9 +194,13 @@ Uses Azure Content Understanding with a custom analyzer (`identityDocClassifier`
 
 Sends the image to `gpt-4.1` (vision-capable) via Azure OpenAI chat completions with a prompt requesting JSON output. Like the Mistral vision analyser, classifies the document visually without OCR.
 
+### BlobSource (`blob_source.py`)
+
+Takes a container-level SAS URL and uses `ContainerClient.from_container_url` (azure-storage-blob) to list blobs. For each supported file it builds a per-blob SAS URL by appending the blob name between the container base URL and the SAS query string. No data is downloaded locally — the URLs are passed directly to the AI APIs.
+
 ### Batch runner (`main.py`)
 
-Processes all images in `dataset/` in batches of 10 using `asyncio`:
+Selects the source (local directory or blob container) based on `BLOB_SAS_URL`, then processes files in batches of 10 using `asyncio`:
 
 - Each batch runs files concurrently via `asyncio.gather`
 - Within each file, all four analyser calls run in parallel via `asyncio.gather` + `asyncio.to_thread`

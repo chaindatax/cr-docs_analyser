@@ -1,6 +1,6 @@
 import base64, json, os
 from openai import AzureOpenAI
-from docs_analyser.base import FIELD_DEFINITIONS, AnalysisResult, Analyser
+from docs_analyser.base import FIELD_DEFINITIONS, AnalysisResult, Analyser, is_url
 
 
 class AzureVisionAnalyser(Analyser):
@@ -11,9 +11,13 @@ class AzureVisionAnalyser(Analyser):
             api_version="2025-01-01-preview",
         )
 
-    def runner(self, file_path: str) -> AnalysisResult:
-        with open(file_path, "rb") as f:
-            b64 = base64.b64encode(f.read()).decode()
+    def runner(self, source: str) -> AnalysisResult:
+        if is_url(source):
+            image_url = source
+        else:
+            with open(source, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+            image_url = f"data:image/jpeg;base64,{b64}"
 
         response = self._client.chat.completions.create(
             model="gpt-4.1",  # nom du déploiement dans Azure AI Foundry
@@ -22,7 +26,7 @@ class AzureVisionAnalyser(Analyser):
                 "content": [
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
+                        "image_url": {"url": image_url},
                     },
                     {
                         "type": "text",
