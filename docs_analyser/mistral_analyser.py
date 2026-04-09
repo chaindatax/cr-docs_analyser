@@ -5,7 +5,7 @@ import os
 from mistralai.client import Mistral
 from mistralai.client.models import JSONSchema, ResponseFormat
 
-from docs_analyser.base import FIELD_DEFINITIONS, AnalysisResult, Analyser
+from docs_analyser.base import FIELD_DEFINITIONS, AnalysisResult, Analyser, read_source_bytes
 
 
 class MistralAnalyser(Analyser):
@@ -21,26 +21,29 @@ class MistralAnalyser(Analyser):
         """Initialise the Mistral client using ``MISTRAL_API_KEY``."""
         self._client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
 
-    def runner(self, file_path: str) -> AnalysisResult:
+    def runner(self, source: str) -> AnalysisResult:
         """Analyse a document image using Mistral OCR.
 
-        Reads the image, encodes it as base64, and calls the OCR API with
-        a JSON schema that extracts ``id_doc`` and ``document_type``.
+        Accepts either a local file path or an HTTPS URL (e.g. a blob SAS URL).
+        PDFs are submitted as ``document_url``; images as ``image_url``.
 
         Args:
-            file_path: Path to the image file to analyse.
+            source: Local path or HTTPS URL of the document to analyse.
 
         Returns:
             An :class:`AnalysisResult` populated from the model's JSON output.
         """
-        with open(file_path, "rb") as f:
-            base64_file = base64.b64encode(f.read()).decode("utf-8")
+        raw = read_source_bytes(source)
+        bare = source.split("?")[0].lower()
+        if bare.endswith(".pdf"):
+            b64 = base64.b64encode(raw).decode("utf-8")
+            document = {"type": "document_url", "document_url": f"data:application/pdf;base64,{b64}"}
+        else:
+            b64 = base64.b64encode(raw).decode("utf-8")
+            document = {"type": "image_url", "image_url": f"data:image/jpeg;base64,{b64}"}
 
         response = self._client.ocr.process(
-            document={
-                "type": "image_url",
-                "image_url": f"data:image/jpeg;base64,{base64_file}",
-            },
+            document=document,
             model="mistral-ocr-latest",
             include_image_base64=False,
             document_annotation_format=ResponseFormat(

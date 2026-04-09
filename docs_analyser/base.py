@@ -1,6 +1,25 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+
+def is_url(source: str) -> bool:
+    """Return ``True`` if *source* is an HTTPS/HTTP URL rather than a local path."""
+    return source.startswith("https://") or source.startswith("http://")
+
+
+def read_source_bytes(source: str) -> bytes:
+    """Return the raw bytes of *source*, whether it is a local path or a URL.
+
+    Used by analysers that do not support direct URL fetching (e.g. Mistral),
+    so the content is downloaded in-memory without touching disk.
+    """
+    if is_url(source):
+        import urllib.request
+        with urllib.request.urlopen(source) as resp:
+            return resp.read()
+    with open(source, "rb") as f:
+        return f.read()
+
 FIELD_DEFINITIONS: dict[str, dict] = {
     "is_doc_id": {
         "type": "boolean",

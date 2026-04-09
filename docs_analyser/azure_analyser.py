@@ -1,11 +1,12 @@
 import os
 
 from azure.ai.contentunderstanding import ContentUnderstandingClient
+from azure.ai.contentunderstanding.models import AnalysisInput
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import ResourceNotFoundError
 from azure.identity import DefaultAzureCredential
 
-from docs_analyser.base import AnalysisResult, Analyser, FIELD_DEFINITIONS
+from docs_analyser.base import AnalysisResult, Analyser, FIELD_DEFINITIONS, is_url
 
 IDENTITY_ANALYZER_ID = "identityDocClassifier"
 IDENTITY_ANALYZER_DEFINITION = {
@@ -63,25 +64,29 @@ class AzureAnalyser(Analyser):
             IDENTITY_ANALYZER_ID, IDENTITY_ANALYZER_DEFINITION, allow_replace=True
         ).result()
 
-    def runner(self, file_path: str) -> AnalysisResult:
+    def runner(self, source: str) -> AnalysisResult:
         """Analyse a document image using Azure Content Understanding.
 
-        Submits the image to the ``identityDocClassifier`` analyzer and maps
-        the returned fields to an :class:`AnalysisResult`.
+        Accepts either a local file path or an HTTPS URL (e.g. a blob SAS URL).
 
         Args:
-            file_path: Path to the image file to analyse.
+            source: Local path or HTTPS URL of the document to analyse.
 
         Returns:
             An :class:`AnalysisResult` populated from the analyzer's field extraction.
         """
-        with open(file_path, "rb") as f:
-            file_bytes = f.read()
-
-        result = self._client.begin_analyze_binary(
-            analyzer_id=IDENTITY_ANALYZER_ID,
-            binary_input=file_bytes,
-        ).result()
+        if is_url(source):
+            result = self._client.begin_analyze(
+                analyzer_id=IDENTITY_ANALYZER_ID,
+                inputs=[AnalysisInput(url=source)],
+            ).result()
+        else:
+            with open(source, "rb") as f:
+                file_bytes = f.read()
+            result = self._client.begin_analyze_binary(
+                analyzer_id=IDENTITY_ANALYZER_ID,
+                binary_input=file_bytes,
+            ).result()
 
         fields = result.contents[0].fields
         return AnalysisResult(
