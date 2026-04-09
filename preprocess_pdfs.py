@@ -78,6 +78,17 @@ def page_name(stem: str, page_index: int) -> str:
 # ---------------------------------------------------------------------------
 
 def process_local(dataset_dir: Path, keep_originals: bool = KEEP_ORIGINALS) -> None:
+    """Convert all PDF files found recursively under *dataset_dir* to JPEG images.
+
+    For each PDF, one JPEG is written per page using :func:`page_name` for
+    naming.  The original PDF is deleted afterwards unless *keep_originals* is
+    ``True``.
+
+    Args:
+        dataset_dir: Root directory to search for ``.pdf`` files.
+        keep_originals: When ``False`` (default), the source PDF is removed
+            after a successful conversion.
+    """
     pdf_files = sorted(dataset_dir.rglob("*.pdf"))
     if not pdf_files:
         print("No PDF files found.")
@@ -107,6 +118,18 @@ def process_local(dataset_dir: Path, keep_originals: bool = KEEP_ORIGINALS) -> N
 # ---------------------------------------------------------------------------
 
 def process_blob(sas_url: str, keep_originals: bool = KEEP_ORIGINALS) -> None:
+    """Convert all PDF blobs in an Azure Blob Storage container to JPEG images.
+
+    Each PDF blob is downloaded in-memory, converted page-by-page, and each
+    resulting JPEG is uploaded back to the same virtual folder.  The original
+    PDF blob is deleted afterwards unless *keep_originals* is ``True``.
+
+    Args:
+        sas_url: Container-level SAS URL with Read, List, Write, and Delete
+            permissions.
+        keep_originals: When ``False`` (default), the source PDF blob is
+            deleted after a successful conversion.
+    """
     client = ContainerClient.from_container_url(sas_url)
 
     pdf_blobs = [b for b in client.list_blobs() if b.name.lower().endswith(".pdf")]
@@ -143,7 +166,8 @@ def process_blob(sas_url: str, keep_originals: bool = KEEP_ORIGINALS) -> None:
     print(f"\nDone. Converted {len(pdf_blobs)} PDF blob(s).")
 
 
-def _jpg_content_settings():
+def _jpg_content_settings() -> ContentSettings:
+    """Return a :class:`ContentSettings` instance for JPEG blobs."""
     return ContentSettings(content_type="image/jpeg")
 
 
