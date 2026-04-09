@@ -38,26 +38,30 @@ async def analyse_file(
     source: str,
     file_path_label: str,
     filename: str,
-    mistral: MistralAnalyser,
-    azure: AzureAnalyser,
-    mistral_vision: MistralVisionAnalyser,
-    azure_vision: AzureVisionAnalyser,
+    mistral: MistralAnalyser | None,
+    azure: AzureAnalyser | None,
+    mistral_vision: MistralVisionAnalyser | None,
+    azure_vision: AzureVisionAnalyser | None,
 ) -> dict:
-    """Run all four analysers on a single file concurrently.
+    """Run enabled analysers on a single file concurrently.
+
+    Analysers passed as ``None`` are skipped; their CSV columns are left empty.
 
     Args:
         source: Local path or HTTPS URL of the document.
         file_path_label: Value written to the ``file_path`` CSV column.
         filename: Value written to the ``filename`` CSV column.
-        mistral: Initialised :class:`MistralAnalyser` instance.
-        azure: Initialised :class:`AzureAnalyser` instance.
-        mistral_vision: Initialised :class:`MistralVisionAnalyser` instance.
-        azure_vision: Initialised :class:`AzureVisionAnalyser` instance.
+        mistral: :class:`MistralAnalyser` instance, or ``None`` if disabled.
+        azure: :class:`AzureAnalyser` instance, or ``None`` if disabled.
+        mistral_vision: :class:`MistralVisionAnalyser` instance, or ``None`` if disabled.
+        azure_vision: :class:`AzureVisionAnalyser` instance, or ``None`` if disabled.
 
     Returns:
         A dict with keys matching ``FIELDNAMES``, including ``aligned``.
     """
     async def run(analyser, name) -> AnalysisResult | None:
+        if analyser is None:
+            return None
         try:
             return await asyncio.to_thread(analyser.runner, source)
         except Exception as e:
@@ -71,12 +75,21 @@ async def analyse_file(
         run(azure_vision, "azure_vision"),
     )
 
-    results = [mistral_result, azure_result, mistral_vision_result, azure_vision_result]
+    active_results = [
+        r for analyser, r in [
+            (mistral, mistral_result),
+            (azure, azure_result),
+            (mistral_vision, mistral_vision_result),
+            (azure_vision, azure_vision_result),
+        ]
+        if analyser is not None
+    ]
     aligned = (
-        all(r is not None for r in results)
-        and len({r.is_doc_id for r in results}) == 1
-        and len({r.id_doc_type for r in results}) == 1
-        and len({r.doc_type for r in results}) == 1
+        len(active_results) > 1
+        and all(r is not None for r in active_results)
+        and len({r.is_doc_id for r in active_results}) == 1
+        and len({r.id_doc_type for r in active_results}) == 1
+        and len({r.doc_type for r in active_results}) == 1
     )
     print(f"  done: {filename} — aligned={aligned}")
 
@@ -112,13 +125,27 @@ def _local_files(dataset_dir: Path) -> list[tuple[str, str, str]]:
     return [(str(p), str(p.parent), p.name) for p in paths]
 
 
+def _is_enabled(var: str) -> bool:
+    """Return True unless the env var is explicitly set to 'false' or '0'."""
+    return os.getenv(var, "true").strip().lower() not in ("false", "0")
+
+
 async def analyse_all(output_csv: Path, batch_size: int = BATCH_SIZE):
     """Analyse all files and write results to a CSV file.
 
-    Source is determined by the ``BLOB_SAS_URL`` environment variable:
+    **Dataset source** — controlled by ``BLOB_SAS_URL``:
+
     - If set: blobs are listed from the Azure container and analysed via their
       SAS URLs — no local download required.
     - If absent: files are read from the local ``dataset/`` directory.
+
+    **Active analysers** — controlled by ``MISTRAL_ENABLED`` and ``AZURE_ENABLED``
+    (both default to ``true``):
+
+    - ``MISTRAL_ENABLED=false`` skips :class:`MistralAnalyser` and
+      :class:`MistralVisionAnalyser`.
+    - ``AZURE_ENABLED=false`` skips :class:`AzureAnalyser` and
+      :class:`AzureVisionAnalyser`.
 
     Args:
         output_csv: Destination path for the CSV output.
@@ -132,12 +159,20 @@ async def analyse_all(output_csv: Path, batch_size: int = BATCH_SIZE):
         print(f"Source: local {DATASET_DIR}/")
         files = _local_files(DATASET_DIR)
 
+    mistral_enabled = _is_enabled("MISTRAL_ENABLED")
+    azure_enabled = _is_enabled("AZURE_ENABLED")
+    print(f"Analysers: {'Mistral OCR + Vision' if mistral_enabled else '[Mistral disabled]'}"
+          f"  |  {'Azure CU + Vision' if azure_enabled else '[Azure disabled]'}")
+
+    if not mistral_enabled and not azure_enabled:
+        raise ValueError("All analysers are disabled. Set MISTRAL_ENABLED or AZURE_ENABLED to true.")
+
     print(f"Found {len(files)} files, processing in batches of {batch_size}...\n")
 
-    mistral = MistralAnalyser()
-    azure = AzureAnalyser()
-    mistral_vision = MistralVisionAnalyser()
-    azure_vision = AzureVisionAnalyser()
+    mistral       = MistralAnalyser()       if mistral_enabled else None
+    mistral_vision = MistralVisionAnalyser() if mistral_enabled else None
+    azure         = AzureAnalyser()         if azure_enabled  else None
+    azure_vision  = AzureVisionAnalyser()   if azure_enabled  else None
     rows = []
 
     for batch_start in range(0, len(files), batch_size):

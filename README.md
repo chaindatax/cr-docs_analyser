@@ -86,7 +86,11 @@ CONTENTUNDERSTANDING_KEY=your_azure_key
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
 AZURE_OPENAI_KEY=your_azure_openai_key
 
-# Optional — Azure Blob Storage (see "Dataset source" below)
+# Optional — disable one provider entirely (default: both enabled)
+MISTRAL_ENABLED=true
+AZURE_ENABLED=true
+
+# Optional — Azure Blob Storage dataset source (see "Dataset source" below)
 BLOB_SAS_URL=https://<account>.blob.core.windows.net/<container>?<sas-token>
 ```
 
@@ -100,8 +104,10 @@ Both Azure analysers require models deployed in your Azure AI Foundry resource:
 ## Usage
 
 ```bash
-uv run main.py        # analyse all files in dataset/ and write results.csv
-uv run pytest tests/  # run unit tests
+uv run main.py                          # all analysers, local dataset/
+MISTRAL_ENABLED=false uv run main.py    # Azure only (no Mistral API key needed)
+AZURE_ENABLED=false uv run main.py      # Mistral only (no Azure keys needed)
+uv run pytest tests/                    # run unit tests
 uv run pytest tests/test_dataset.py -v  # run integration tests against real APIs
 ```
 
